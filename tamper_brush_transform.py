@@ -6,7 +6,7 @@
 	Daniel Page & Tom Coulson
 '''
 
-from numpy import degrees, matrix, block, pi, sin, cos, arccos, arctan, dot, linalg, zeros, concatenate 
+from numpy import matrix, block, pi, sin, cos, arccos, arctan, dot, linalg, zeros, concatenate 
 
 # Tamper-brush origin in the base reference frame
 base_P_tamperbr = matrix([598.10, 4.31, 212.58]).T
@@ -17,7 +17,7 @@ base_P_adpnt = matrix([557.50, 73.18, 157.58]).T
 # The change in coordinates with respect to the base
 dspmt_vector = base_P_adpnt - base_P_tamperbr
 
-# Determine the change of angle from the axis axis of the displacement vector
+# Determine the angle from the x axis of the displacement vector
 base_X_vector = [1, 0] # Unit vector in the positive x direction of the base
 dspmt_xy_vector = [float(dspmt_vector[0]), float(dspmt_vector[1])] # The displacement in terms of x and y
 
