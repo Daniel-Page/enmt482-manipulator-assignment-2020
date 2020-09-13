@@ -44,6 +44,7 @@ tamperbr_theta = arccos(dot_product) # Angle in radians
 
 # Dot product angle is always positive
 # The signs of the angles need to be added manually
+# atan2?
 theta = base_theta - tamperbr_theta
 
 # Rotation transform

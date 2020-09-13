@@ -30,6 +30,7 @@ robot.MoveJ(target, blocking=True)
 
 # servo through joint positions using MoveJ
 for ii in servo_positions:
+    print(ii)
     robot.MoveJ(ii)
 #end for
 
