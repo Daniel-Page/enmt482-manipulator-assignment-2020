@@ -18,22 +18,32 @@ target = RDK.Item('Home')   # existing target in station
 robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
 
-robot.MoveL(target, blocking=True)
+#robot.MoveL(target, blocking=True)
 
 
 # Use the RDK Matrix object from to hold pose (its an HT)
-base_T_grinder = np.matrix([[-0.73289583, -0.68034087, 0,  484.51],
- 				            [ 0.68034087, -0.73289583, 0, -426.6 ],
- 				            [     0,            0,     1,  318.38],
- 				            [     0,            0,     0,    1   ]])
+base_T_coffmch = rdk.Mat([[-2.54742826e-01, -9.67008838e-01,  0.00000000e+00, -3.59900000e+02],
+ [ 9.67008838e-01, -2.54742826e-01,  0.00000000e+00, -3.87380000e+02],
+ [ 0.00000000e+00,  0.00000000e+00,  1.00000000e+00,  3.41240000e+02],
+ [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,  1.00000000e+00]])
 
-grinder_P_loc = np.matrix([80.67, 300.25, -94.89]).T
+coffmch_T_switch = rdk.Mat([[ 6.123234e-17,  0.000000e+00, -1.000000e+00,  5.067000e+01],
+        [ 0.000000e+00,  1.000000e+00,  0.000000e+00,  3.525000e+01],
+        [ 1.000000e+00,  0.000000e+00,  6.123234e-17, -9.489000e+01],
+        [ 0.000000e+00,  0.000000e+00,  0.000000e+00,  1.000000e+00]])
 
-base_P_loc = base_T_grinder*np.concatenate((grinder_P_loc, np.matrix([1])))
-base_P_loc = base_P_loc[0:-1]
 
-base_P_loc = np.concatenate((base_P_loc, np.matrix([np.radians(90),np.radians(60),np.radians(0)]).T))
+grinder_P_loc = np.matrix([50,0,0]).T
 
-pose = rdk.TxyzRxyz_2_Pose(base_P_loc)
+base_P_loc = base_T_coffmch*coffmch_T_switch
 
-robot.MoveL(pose, blocking=True)
+
+
+robot.MoveJ(base_P_loc, blocking=True)
+
+
+
+
+#robot.MoveL(pose, blocking=True)
+
+
