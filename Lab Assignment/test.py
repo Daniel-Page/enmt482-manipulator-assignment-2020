@@ -23,7 +23,6 @@ grinder_attach = RDK.Item('Grinder Tool Attach (Stand)')
 grinder_detach = RDK.Item('Grinder Tool Detach (Stand)')
 
 
-
 T_porta_filter_approach = rdk.Mat([
 	[-1.0000000e+00,  0.0000000e+00,  1.2246468e-16, -3.9959000e+02],
 	[ 0.0000000e+00,  1.0000000e+00,  0.0000000e+00, -5.5100000e+01],
@@ -39,12 +38,26 @@ base_T_grinder = rdk.Mat([
 ])
 
 
+# Connect to the robot
+#rdk.setRunMode(RUNMODE_SIMULATE)
+#jnts = robot.Joints()
+
+# Check the connection status and message
+#    state, msg = robot.ConnectedState()
+#    print(state)
+#    print(msg)
+#    if state != ROBOTCOM_READY:
+#        errors = errors + 'Problems connecting: ' + robot.Name() + ': ' + msg + '\n'
+#    else:
+#        # move to the joint position in the simulator:
+#        robot.MoveJ(jnts, False)
+
 robot.MoveJ(target, blocking=True)
 robot.MoveJ(T_porta_filter_approach, blocking=True)
 
 portafilter_attach.RunCode()
-#robot.setPoseFrame(world_frame)
-#robot.setPoseTool(robot.PoseTool())
+portafilter_attach.WaitFinished()
+robot.setPoseFrame(world_frame)
+robot.setPoseTool(robot.PoseTool())
 
-#rdk.pause(5)
-#robot.MoveJ(base_T_grinder, blocking=True)
+robot.MoveJ(base_T_grinder, blocking=True)
