@@ -6,7 +6,7 @@
 	Daniel Page & Tom Coulson
 '''
 
-from numpy import matrix, block, pi, sin, cos, arccos, arctan, dot, linalg, zeros, concatenate 
+from numpy import printoptions, matrix, block, pi, sin, cos, arccos, arctan, dot, linalg, zeros, concatenate 
 
 # Grinder origin in the base reference frame
 base_P_grinder = matrix([484.51, -426.60, 318.38]).T
@@ -36,7 +36,8 @@ base_R_grinder = matrix([[cos(theta), -sin(theta), 0],
 base_T_grinder = block([[base_R_grinder, base_P_grinder], 
 						[   zeros(3),          1       ]])
 
-print('base_T_grinder =\n{}\n'.format(base_T_grinder))
+with printoptions(formatter={'float': lambda x: format(x, '6.7E')}):
+	print('base_T_grinder =\n{}\n'.format(repr(base_T_grinder)))
 
 grinder_P_loc = matrix([157.61, 0, -250.45]).T
 
