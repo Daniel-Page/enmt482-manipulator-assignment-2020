@@ -23,19 +23,23 @@ grinder_attach = RDK.Item('Grinder Tool Attach (Stand)')
 grinder_detach = RDK.Item('Grinder Tool Detach (Stand)')
 
 
-T_porta_filter_approach = rdk.Mat([
-	[-1.0000000e+00,  0.0000000e+00,  1.2246468e-16, -3.9959000e+02],
-	[ 0.0000000e+00,  1.0000000e+00,  0.0000000e+00, -5.5100000e+01],
-    [-1.2246468e-16,  0.0000000e+00, -1.0000000e+00,  5.3402000e+02],
-    [ 0.0000000e+00,  0.0000000e+00,  0.0000000e+00,  1.0000000e+00]
-])
+T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, 0])
+T_portafilter_tool_approach = rdk.TxyzRxyz_2_Pose([-399.59, -55.10, 534.02, 0, np.pi, 0])
+T_cup_tool_approach = rdk.TxyzRxyz_2_Pose([-358.13, 102.68, 532.67, 0, np.pi, 0])
+
+
 
 base_T_grinder = rdk.Mat([
-	[-7.3289583E-01, -6.8034087E-01, 0.0000000E+00,  4.8451000E+02],
-	[ 6.8034087E-01, -7.3289583E-01, 0.0000000E+00, -4.2660000E+02],
-	[ 0.0000000E+00,  0.0000000E+00, 1.0000000E+00,  3.1838000E+02],
-	[ 0.0000000E+00,  0.0000000E+00, 0.0000000E+00,  1.0000000E+00]
+	[-7.3289583075E-01, -6.8034087138E-01, 0.0000000000E+00,
+         4.8451000000E+02],
+        [6.8034087138E-01, -7.3289583075E-01, 0.0000000000E+00,
+         -4.2660000000E+02],
+        [0.0000000000E+00, 0.0000000000E+00, 1.0000000000E+00,
+         3.1838000000E+02],
+        [0.0000000000E+00, 0.0000000000E+00, 0.0000000000E+00,
+         1.0000000000E+00]
 ])
+grinder_T_loc = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, -np.pi/2, 0])
 
 
 # Connect to the robot
@@ -52,12 +56,25 @@ base_T_grinder = rdk.Mat([
 #        # move to the joint position in the simulator:
 #        robot.MoveJ(jnts, False)
 
-robot.MoveJ(target, blocking=True)
-robot.MoveJ(T_porta_filter_approach, blocking=True)
+#robot.MoveJ(target, blocking=True)
+#robot.MoveJ(T_portafilter_tool_approach, blocking=True)
 
 portafilter_attach.RunCode()
 portafilter_attach.WaitFinished()
 robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
+#T = rdk.TxyzRxyz_2_Pose([4.71, 0, 144.76, 0, np.radians(-7.5), 0])
+#R = rdk.TxyzRxyz_2_Pose([32.0, 0, -27.56, 0, np.radians(7.5), 0])
 
-robot.MoveJ(base_T_grinder, blocking=True)
+# Not quite right
+#robot.MoveJ(base_T_grinder*grinder_T_loc*T*R, blocking=True)
+
+
+
+# Inverse?
+tcp_T_pf1 = rdk.TxyzRxyz_2_Pose([4.71, 0, 144.76, 0, np.radians(7.5), 0])
+
+tcp_T_pf2 = rdk.TxyzRxyz_2_Pose([32.0, 0, -27.56, 0, np.radians(-7.5), 0])
+
+robot.MoveJ(base_T_grinder*grinder_T_loc*tcp_T_pf1*tcp_T_pf2, blocking=True)
+

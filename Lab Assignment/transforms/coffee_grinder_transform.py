@@ -36,7 +36,7 @@ base_R_grinder = matrix([[cos(theta), -sin(theta), 0],
 base_T_grinder = block([[base_R_grinder, base_P_grinder], 
 						[   zeros(3),          1       ]])
 
-with printoptions(formatter={'float': lambda x: format(x, '6.7E')}):
+with printoptions(formatter={'float': lambda x: format(x, '6.10E')}):
 	print('base_T_grinder =\n{}\n'.format(repr(base_T_grinder)))
 
 grinder_P_loc = matrix([157.61, 0, -250.45]).T
