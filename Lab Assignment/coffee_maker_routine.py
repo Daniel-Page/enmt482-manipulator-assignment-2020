@@ -29,8 +29,6 @@ portafilter_detach_grinder = RDK.Item('Portafilter Tool Detach (Grinder)')
 
 
 # Tool stand entry positions
-T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, 0])
-T_portafilter_tool_approach = rdk.TxyzRxyz_2_Pose([-399.59, -55.10, 534.02, 0, np.pi, 0])
 T_cup_tool_approach = rdk.TxyzRxyz_2_Pose([-358.13, 102.68, 532.67, 0, np.pi, 0])
 
 
@@ -60,7 +58,16 @@ grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, -np.pi/2, 0])
 robot.MoveJ(target, blocking=True)
 
 
+# Intermediate point between tool stand and grinder
+intermediate_point = rdk.Mat([   [-1.000000,    -0.000000,     0.000000,    14.953000],
+    [ -0.000000,     1.000000,    -0.000000,  -304.876000 ],
+    [ -0.000000,    -0.000000,    -1.000000,   388.727000] ,
+     [ 0.000000,     0.000000,     0.000000,     1.000000 ]])
+robot.MoveJ(intermediate_point, blocking=True)
+
+
 # Approach portafilter tool on the stand
+T_portafilter_tool_approach = rdk.TxyzRxyz_2_Pose([-399.59, -55.10, 534.02, 0, np.pi, 0])
 robot.MoveJ(T_portafilter_tool_approach, blocking=True)
 
 
@@ -92,5 +99,32 @@ robot.MoveJ(portafilter_stand, blocking=True)
 # Detach portafilter at the grinder
 portafilter_detach_grinder.RunCode()
 portafilter_detach_grinder.WaitFinished()
+robot.setPoseFrame(world_frame)
+robot.setPoseTool(robot.PoseTool())
+
+
+# Intermediate point between tool stand and grinder
+intermediate_point = rdk.Mat([   [-1.000000,    -0.000000,     0.000000,    14.953000],
+    [ -0.000000,     1.000000,    -0.000000,  -304.876000 ],
+    [ -0.000000,    -0.000000,    -1.000000,   388.727000] ,
+     [ 0.000000,     0.000000,     0.000000,     1.000000 ]])
+robot.MoveJ(intermediate_point, blocking=True)
+
+
+T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, 0])
+robot.MoveJ(T_grinder_tool_approach, blocking=True)
+
+
+# Intermediate point between tool stand and grinder
+intermediate_point = rdk.Mat([   [-1.000000,    -0.000000,     0.000000,    14.953000],
+    [ -0.000000,     1.000000,    -0.000000,  -304.876000 ],
+    [ -0.000000,    -0.000000,    -1.000000,   388.727000] ,
+     [ 0.000000,     0.000000,     0.000000,     1.000000 ]])
+robot.MoveJ(intermediate_point, blocking=True)
+
+
+# Attach grinder tool from stand
+grinder_attach_stand.RunCode()
+grinder_attach_stand.WaitFinished()
 robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
