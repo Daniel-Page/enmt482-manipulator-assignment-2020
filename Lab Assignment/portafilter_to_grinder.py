@@ -6,6 +6,7 @@
 	Daniel Page & Tom Coulson
 '''
 
+
 # Right click on provided scripts and click run on robot to work
 # Double click disconnect
 # Get robot position
@@ -22,33 +23,6 @@ world_frame = RDK.Item('UR5 Base')
 target = RDK.Item('Home')   # existing target in station
 robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
-
-
-# Provided routines
-portafilter_attach_stand = RDK.Item('Portafilter Tool Attach (Stand)')
-portafilter_detach_stand = RDK.Item('Portafilter Tool Detach (Stand)')
-grinder_attach_stand = RDK.Item('Grinder Tool Attach (Stand)')
-grinder_detach_stand = RDK.Item('Grinder Tool Detach (Stand)')
-portafilter_detach_grinder = RDK.Item('Portafilter Tool Detach (Grinder)')
-
-
-# Tool stand entry positions
-T_cup_tool_approach = rdk.TxyzRxyz_2_Pose([-358.13, 102.68, 532.67, 0, np.pi, 0])
-
-
-# Grinder reference frame with respect to the robot base reference frame
-base_T_grinder = rdk.Mat([
-	[-7.3289583075E-01, -6.8034087138E-01, 0.0000000000E+00,
-         4.8451000000E+02],
-        [6.8034087138E-01, -7.3289583075E-01, 0.0000000000E+00,
-         -4.2660000000E+02],
-        [0.0000000000E+00, 0.0000000000E+00, 1.0000000000E+00,
-         3.1838000000E+02],
-        [0.0000000000E+00, 0.0000000000E+00, 0.0000000000E+00,
-         1.0000000000E+00]
-])
-
-
 
 
 ########################
@@ -82,8 +56,6 @@ robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
 
 
-
-
 intermediate_point = rdk.Mat([   [ 0.442774,    -0.896633,    -0.000211,  -249.591000],
     [ -0.896594,    -0.442757,     0.009220,   -95.098000],
     [-0.008360,    -0.003893,    -0.999957,   534.002000],
@@ -112,32 +84,48 @@ intermediate_point = rdk.Mat([     [0.442774,    -0.896633,    -0.000211,   230.
 robot.MoveJ(intermediate_point, blocking=True)
 
 
+# Grinder reference frame with respect to the robot base reference frame
+base_T_grinder = rdk.Mat([
+	[-7.3289583075E-01, -6.8034087138E-01, 0.0000000000E+00,
+         4.8451000000E+02],
+        [6.8034087138E-01, -7.3289583075E-01, 0.0000000000E+00,
+         -4.2660000000E+02],
+        [0.0000000000E+00, 0.0000000000E+00, 1.0000000000E+00,
+         3.1838000000E+02],
+        [0.0000000000E+00, 0.0000000000E+00, 0.0000000000E+00,
+         1.0000000000E+00]
+])
+
 
 r = rdk.TxyzRxyz_2_Pose([80, 0, 40, 0, np.radians(-10), 0])
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, np.radians(-50), np.radians(-90), 0])
 portafilter_stand = base_T_grinder*r*grinder_T_stand
 robot.MoveJ(portafilter_stand, blocking=True)
 
+
 r = rdk.TxyzRxyz_2_Pose([0, 0, 40, 0, np.radians(-10), 0])
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, np.radians(-50), np.radians(-90), 0])
 portafilter_stand = base_T_grinder*r*grinder_T_stand
 robot.MoveJ(portafilter_stand, blocking=True)
+
 
 r = rdk.TxyzRxyz_2_Pose([10, 0, 40, 0, np.radians(-2), 0])
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, np.radians(-50), np.radians(-90), 0])
 portafilter_stand = base_T_grinder*r*grinder_T_stand
 robot.MoveJ(portafilter_stand, blocking=True)
 
-r = rdk.TxyzRxyz_2_Pose([40, 0, 40, 0, np.radians(0), 0])
-grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, np.radians(-50), np.radians(-90), 0])
-portafilter_stand = base_T_grinder*r*grinder_T_stand
+
+grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61 - 2.3, 0, -250.45 - 2.9, 0, np.radians(-90), 0])
+r = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, np.radians(7.5), 0])
+q = rdk.TxyzRxyz_2_Pose([32.0, 0, -27.56, 0, 0, 0])
+m = rdk.TxyzRxyz_2_Pose([0, 0, 0,0,0, np.radians(50)])
+
+
+portafilter_stand = base_T_grinder*grinder_T_stand*r*q*m
 robot.MoveJ(portafilter_stand, blocking=True)
 
 
 # Detach portafilter at the grinder
-portafilter_detach_grinder.RunCode()
-portafilter_detach_grinder.WaitFinished()
+RDK.RunProgram('Portafilter Tool Detach (Grinder)', True)
 robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
-
-
