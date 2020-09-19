@@ -38,10 +38,3 @@ base_T_grinder = block([[base_R_grinder, base_P_grinder],
 
 with printoptions(formatter={'float': lambda x: format(x, '6.10E')}):
 	print('base_T_grinder =\n{}\n'.format(repr(base_T_grinder)))
-
-grinder_P_loc = matrix([157.61, 0, -250.45]).T
-
-base_P_loc = base_T_grinder*concatenate((grinder_P_loc, matrix([1])))
-base_P_loc = base_P_loc[0:3]
-
-print('base_P_loc =\n{}\n'.format(base_P_loc))

@@ -6,7 +6,7 @@
 	Daniel Page & Tom Coulson
 '''
 
-from numpy import matrix, block, pi, sin, cos, arccos, arctan, dot, linalg, zeros, concatenate 
+from numpy import printoptions, matrix, block, pi, sin, cos, arccos, arctan, dot, linalg, zeros, concatenate 
 
 # Tamper-brush origin in the base reference frame
 base_P_tamperbr = matrix([598.10, 4.31, 212.58]).T
@@ -56,11 +56,5 @@ base_R_tamperbr = matrix([[cos(theta), -sin(theta), 0],
 base_T_tamperbr = block([[base_R_tamperbr, base_P_tamperbr], 
 						[   zeros(3),          1       ]])
 
-print('base_T_grinder =\n{}\n'.format(base_T_tamperbr))
-
-tamperbr_P_loc = matrix([-80.00, 0.00, -55.00]).T
-
-base_P_loc = base_T_tamperbr*concatenate((tamperbr_P_loc, matrix([1])))
-base_P_loc = base_P_loc[0:3]
-
-print('base_P_loc =\n{}\n'.format(base_P_loc))
+with printoptions(formatter={'float': lambda x: format(x, '6.10E')}):
+	print('base_T_tamperbr =\n{}\n'.format(repr(base_T_tamperbr)))

@@ -6,7 +6,7 @@
 	Daniel Page & Tom Coulson
 '''
 
-from numpy import matrix, block, pi, sin, cos, arccos, arctan, dot, linalg, zeros, concatenate 
+from numpy import printoptions, matrix, block, pi, sin, cos, arccos, arctan, dot, linalg, zeros, concatenate 
 
 # Coffee machine origin in the base reference frame
 base_P_coffmch = matrix([-359.90, -387.38, 341.24]).T
@@ -37,11 +37,6 @@ base_R_coffmch = matrix([[cos(theta), -sin(theta), 0],
 base_T_coffmch = block([[base_R_coffmch, base_P_coffmch], 
 						[   zeros(3),          1       ]])
 
-print('base_T_coffmch =\n{}\n'.format(base_T_coffmch))
+with printoptions(formatter={'float': lambda x: format(x, '6.10E')}):
+	print('base_T_coffmch =\n{}\n'.format(repr(base_T_coffmch)))
 
-coffmch_P_loc = matrix([0.00, 218.00, 0.00]).T
-
-base_P_loc = base_T_coffmch*concatenate((coffmch_P_loc, matrix([1])))
-base_P_loc = base_P_loc[0:3]
-
-print('base_P_loc =\n{}\n'.format(base_P_loc))
