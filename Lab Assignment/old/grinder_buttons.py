@@ -29,6 +29,17 @@ robot.setPoseTool(robot.PoseTool())
 # Beginning of routine #
 ########################
 
+# Move to home
+robot.MoveJ(target, blocking=True)
+
+# Approach grinder tool on the stand
+T_portafilter_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, 0])
+robot.MoveJ(T_portafilter_tool_approach, blocking=True)
+
+# Attach grinder tool to the tcp
+RDK.RunProgram('Grinder Tool Attach (Stand)', True)
+robot.setPoseFrame(world_frame)
+robot.setPoseTool(robot.PoseTool())
 
 base_T_grinder = rdk.Mat([
 	[-7.3289583075E-01, -6.8034087138E-01, 0.0000000000E+00,
@@ -41,43 +52,45 @@ base_T_grinder = rdk.Mat([
          1.0000000000E+00]
 ])
 
+rotate_arm_T = rdk.TxyzRxyz_2_Pose([0, 0, 0,0,0, np.radians(50)])
 
 # Grinder 'on' button approach
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, 0, np.radians(-90), 0])
 r = rdk.TxyzRxyz_2_Pose([0, 102.82 + 20, 0, np.radians(90), 0, 0])
-portafilter_stand = base_T_grinder*grinder_T_stand*r
+portafilter_stand = base_T_grinder*grinder_T_stand*r*rotate_arm_T
 robot.MoveJ(portafilter_stand, blocking=True)
 
 # Grinder 'on' button press
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, 0, np.radians(-90), 0])
 r = rdk.TxyzRxyz_2_Pose([0, 102.82, 0, np.radians(90), 0, 0])
-portafilter_stand = base_T_grinder*grinder_T_stand*r
+portafilter_stand = base_T_grinder*grinder_T_stand*r*rotate_arm_T
 robot.MoveJ(portafilter_stand, blocking=True)
 
 # Grinder 'on' button release
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, 0, np.radians(-90), 0])
 r = rdk.TxyzRxyz_2_Pose([0, 102.82 + 20, 0, np.radians(90), 0, 0])
-portafilter_stand = base_T_grinder*grinder_T_stand*r
+portafilter_stand = base_T_grinder*grinder_T_stand*r*rotate_arm_T
 robot.MoveJ(portafilter_stand, blocking=True)
 
 
 rdk.pause(3)   
 
-
+'''
 # Grinder 'off' button approach
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, 0, np.radians(-90), 0])
 r = rdk.TxyzRxyz_2_Pose([0, 102.82 + 20, 0, np.radians(90), 0, 0])
-portafilter_stand = base_T_grinder*grinder_T_stand*r
+portafilter_stand = base_T_grinder*grinder_T_stand*r*rotate_arm_T
 robot.MoveJ(portafilter_stand, blocking=True)
 
 # Grinder 'off' button press
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, 0, np.radians(-90), 0])
 r = rdk.TxyzRxyz_2_Pose([0, 102.82, 0, np.radians(90), 0, 0])
-portafilter_stand = base_T_grinder*grinder_T_stand*r
+portafilter_stand = base_T_grinder*grinder_T_stand*r*rotate_arm_T
 robot.MoveJ(portafilter_stand, blocking=True)
 
 # Grinder 'off' button release
 grinder_T_stand = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, 0, np.radians(-90), 0])
 r = rdk.TxyzRxyz_2_Pose([0, 102.82 + 20, 0, np.radians(90), 0, 0])
-portafilter_stand = base_T_grinder*grinder_T_stand*r
+portafilter_stand = base_T_grinder*grinder_T_stand*r*rotate_arm_T
 robot.MoveJ(portafilter_stand, blocking=True)
+'''
