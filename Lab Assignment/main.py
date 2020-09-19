@@ -11,6 +11,7 @@
 # Right click on provided scripts and click run on robot for them to work
 # Double click 'Disconnect' for it to work or press stop
 # Click 'Get robot position' to show actual robot position on the model
+# Only this file needs to be added to RoboDK (assuming the modules are in the same directory as the .rdk file)
 
 
 import robolink as rl # RoboDK API
