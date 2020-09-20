@@ -127,7 +127,7 @@ def tool_stand_to_grinder_buttons(robot):
 
 
 def press_start_stop_grinder(robot):
-	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).inv()
+	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).inv() # Wrong away round
 	button_approach_T = rdk.TxyzRxyz_2_Pose([0, 0, -20, 0, 0, 0])
 
 
@@ -162,7 +162,7 @@ def approach_grinder_lever(robot):
 
 
 def crank_grinder_lever(robot):
-	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([-50, 0, 67.06, 0, 0, 0]).inv()
+	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([-50, 0, 67.06, 0, 0, 0]).inv() # Wrong way round
 	grinder_T_grinder_lever = rdk.TxyzRxyz_2_Pose([-35.82, 83.80, -153.00, 0, np.radians(-90), np.radians(90)])
 	grinder_lever_apprch_T = rdk.TxyzRxyz_2_Pose([0, 0, 10, 0, 0, 0])
 	grinder_lever_pull_T = rdk.TxyzRxyz_2_Pose([0, 0, -40, 0, 0, 0])

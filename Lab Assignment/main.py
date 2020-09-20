@@ -33,6 +33,7 @@ target = RDK.Item('Home') # Existing target in station
 robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
 
+
 '''
 Available commands:
 
@@ -55,21 +56,24 @@ coffee_machine.coffee_switch(robot)
 coffee_machine.hot_water_switch(robot)
 coffee_machine.steam_switch(robot)
 coffee_machine.power_switch(robot)
+
+cup.home_to_tool_stand_cup(robot)
+cup.attach_cup_tool(robot, RDK, world_frame)
+cup.tool_stand_to_cups(robot)
+cup.lower_tool_to_cups(robot)
+
+cup.cup_tool_open(robot, RDK, world_frame)
+cup.cup_tool_close(robot, RDK, world_frame)
+
 '''
+
 
 # Beginning of the routine
 
 robot.MoveJ(target, blocking=True)
 
-grinder.home_to_tool_stand_portafilter(robot)
-grinder.attach_portafilter(robot, RDK, world_frame)
-grinder.tool_stand_to_grinder_portafilter(robot)
-grinder.grinder_lower_portafilter(robot)
-grinder.detach_portafilter(robot, RDK, world_frame)
-grinder.grinder_stand_to_tool_stand(robot)
-grinder.attach_grinder_tool(robot, RDK, world_frame)
-grinder.tool_stand_to_grinder_buttons(robot)
-grinder.press_start_stop_grinder(robot)
+#cup.home_to_tool_stand_cup(robot)
+#cup.attach_cup_tool(robot, RDK, world_frame)
+cup.lower_tool_to_cups(robot)
 
-grinder.approach_grinder_lever(robot)
-grinder.crank_grinder_lever(robot)
+
