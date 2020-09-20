@@ -26,4 +26,5 @@ robot.setPoseTool(robot.PoseTool())
 
 text_file = open("joints.txt", "a")
 text_file.write('{},\n'.format(robot.Joints().tolist()))
+print('{},\n'.format(robot.Joints().tolist()))
 text_file.close()

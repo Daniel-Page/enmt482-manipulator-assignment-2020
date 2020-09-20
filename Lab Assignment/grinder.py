@@ -1,3 +1,12 @@
+'''
+	ENMT482
+	Robotics
+	Assignment 2
+	Grinder Functions
+	Daniel Page & Tom Coulson
+'''
+
+
 import robodk as rdk # Robot toolbox
 import numpy as np
 
@@ -14,6 +23,11 @@ def base_T_grinder():
 	        [0.0000000000E+00, 0.0000000000E+00, 0.0000000000E+00,
 	         1.0000000000E+00]
 	])
+
+
+def rotate_arm_T():
+	# Rotate the end effector 50 degees
+	return rdk.TxyzRxyz_2_Pose([0, 0, 0,0,0, np.radians(50)])
 
 
 def home_to_tool_stand_portafilter(robot):
@@ -52,28 +66,25 @@ def tool_stand_to_grinder_portafilter(robot):
 
 
 def grinder_lower_portafilter(robot):
-	r = rdk.TxyzRxyz_2_Pose([80, 0, 40, 0, np.radians(-10), 0])
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, np.radians(-50), np.radians(-90), 0])
-	portafilter_stand = base_T_grinder()*r*grinder_T_stand
-	robot.MoveJ(portafilter_stand, blocking=True)
-
-	r = rdk.TxyzRxyz_2_Pose([0, 0, 40, 0, np.radians(-10), 0])
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, np.radians(-50), np.radians(-90), 0])
-	portafilter_stand = base_T_grinder()*r*grinder_T_stand
-	robot.MoveJ(portafilter_stand, blocking=True)
-
-	r = rdk.TxyzRxyz_2_Pose([10, 0, 40, 0, np.radians(-2), 0])
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, np.radians(-50), np.radians(-90), 0])
-	portafilter_stand = base_T_grinder()*r*grinder_T_stand
-	robot.MoveJ(portafilter_stand, blocking=True)
-
-	x_offset = 0#-2.3
-	z_offset = 0#-2.9
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61 + x_offset, 0, -250.45 + z_offset, 0, np.radians(-90), 0])
+	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
 	bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32.0, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
-	rotate_arm_T = rdk.TxyzRxyz_2_Pose([0, 0, 0,0,0, np.radians(50)])
-	portafilter_stand = base_T_grinder()*grinder_T_stand*bottom_T_tcp*rotate_arm_T
-	robot.MoveJ(portafilter_stand, blocking=True)
+
+	lower_stand_1_T = rdk.TxyzRxyz_2_Pose([100, 0, -80, 0, np.radians(-20), 0])
+	lower_stand_2_T = rdk.TxyzRxyz_2_Pose([45, 0, -20, 0, np.radians(-15), 0])
+	lower_stand_3_T = rdk.TxyzRxyz_2_Pose([30, 0, 0, 0, np.radians(-10), 0])
+	lower_stand_4_T = rdk.TxyzRxyz_2_Pose([10, 0, 0, 0, np.radians(0), 0])
+	
+	base_T_lower_stand_1 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_1_T*rotate_arm_T()
+	base_T_lower_stand_2 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_2_T*rotate_arm_T()
+	base_T_lower_stand_3 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_3_T*rotate_arm_T()
+	base_T_lower_stand_4 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_4_T*rotate_arm_T()
+	base_T_grinder_stand = base_T_grinder()*grinder_T_stand*bottom_T_tcp*rotate_arm_T()
+
+	robot.MoveJ(base_T_lower_stand_1, blocking=True)
+	robot.MoveJ(base_T_lower_stand_2, blocking=True)
+	robot.MoveJ(base_T_lower_stand_3, blocking=True)
+	robot.MoveJ(base_T_lower_stand_4, blocking=True)
+	robot.MoveJ(base_T_grinder_stand, blocking=True)
 
 
 def detach_portafilter(robot, RDK, world_frame):
@@ -91,7 +102,6 @@ def grinder_stand_to_tool_stand(robot):
 	for ii in servo_positions:
 		robot.MoveJ(ii, blocking=True)
 
-	# Approach grinder tool on the stand
 	T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, 0])
 	robot.MoveJ(T_grinder_tool_approach, blocking=True)
 
@@ -117,42 +127,49 @@ def tool_stand_to_grinder_buttons(robot):
 
 
 def press_start_stop_grinder(robot):
-	rotate_arm_T = rdk.TxyzRxyz_2_Pose([0, 0, 0,0,0, np.radians(50)])
+	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).inv()
+	button_approach_T = rdk.TxyzRxyz_2_Pose([0, 0, -20, 0, 0, 0])
 
-	# Grinder 'on' button approach
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, 0, np.radians(-90), 0])
-	r = rdk.TxyzRxyz_2_Pose([0, 102.82 + 20, 0, np.radians(90), 0, 0])
-	portafilter_stand = base_T_grinder()*grinder_T_stand*r*rotate_arm_T
-	robot.MoveJ(portafilter_stand, blocking=True)
 
-	# Grinder 'on' button press
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, 0, np.radians(-90), 0])
-	r = rdk.TxyzRxyz_2_Pose([0, 102.82, 0, np.radians(90), 0, 0])
-	portafilter_stand = base_T_grinder()*grinder_T_stand*r*rotate_arm_T
-	robot.MoveJ(portafilter_stand, blocking=True)
+	grinder_T_on_button = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, np.radians(90), 0, np.radians(90)])
+	base_T_on_button_apprch = base_T_grinder()*grinder_T_on_button*tcp_T_pointer_end*button_approach_T*rotate_arm_T()
+	base_T_on_button = base_T_grinder()*grinder_T_on_button*tcp_T_pointer_end*rotate_arm_T()
 
-	# Grinder 'on' button release
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, 0, np.radians(-90), 0])
-	r = rdk.TxyzRxyz_2_Pose([0, 102.82 + 20, 0, np.radians(90), 0, 0])
-	portafilter_stand = base_T_grinder()*grinder_T_stand*r*rotate_arm_T
-	robot.MoveJ(portafilter_stand, blocking=True)
+	robot.MoveJ(base_T_on_button_apprch, blocking=True) # Grinder 'on' button approach
+	robot.MoveJ(base_T_on_button, blocking=True) # Grinder 'on' button press
+	robot.MoveJ(base_T_on_button_apprch, blocking=True) # Grinder 'on' button release
 
-	rdk.pause(3) # A 3 second pause while the coffee grinding occurs 
 
-	# Grinder 'off' button approach
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, 0, np.radians(-90), 0])
-	r = rdk.TxyzRxyz_2_Pose([0, 102.82 + 20, 0, np.radians(90), 0, 0])
-	portafilter_stand = base_T_grinder()*grinder_T_stand*r*rotate_arm_T
-	robot.MoveJ(portafilter_stand, blocking=True)
+	rdk.pause(3) # A 3 second pause while the coffee grinding occurs
 
-	# Grinder 'off' button press
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, 0, np.radians(-90), 0])
-	r = rdk.TxyzRxyz_2_Pose([0, 102.82, 0, np.radians(90), 0, 0])
-	portafilter_stand = base_T_grinder()*grinder_T_stand*r*rotate_arm_T
-	robot.MoveJ(portafilter_stand, blocking=True)
 
-	# Grinder 'off' button release
-	grinder_T_stand = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, 0, np.radians(-90), 0])
-	r = rdk.TxyzRxyz_2_Pose([0, 102.82 + 20, 0, np.radians(90), 0, 0])
-	portafilter_stand = base_T_grinder()*grinder_T_stand*r*rotate_arm_T
-	robot.MoveJ(portafilter_stand, blocking=True)
+	grinder_T_off_button = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, np.radians(90), 0, np.radians(90)])
+	base_T_off_button_apprch = base_T_grinder()*grinder_T_off_button*tcp_T_pointer_end*button_approach_T*rotate_arm_T()
+	base_T_off_button = base_T_grinder()*grinder_T_off_button*tcp_T_pointer_end*rotate_arm_T()
+
+	robot.MoveJ(base_T_off_button_apprch, blocking=True) # Grinder 'off' button approach
+	robot.MoveJ(base_T_off_button, blocking=True) # Grinder 'off' button press
+	robot.MoveJ(base_T_off_button_apprch, blocking=True) # Grinder 'off' button release
+
+
+def approach_grinder_lever(robot):
+	servo_positions = [[-64.77185023344938, -127.12135786977275, -72.80221506393488, -160.07568512512123, 158.09842468457376, -219.99956055641846],
+	[-63.58, -89.11, -99.35, -141.39, 159.28, -219.99],
+	[81.30007567320077, -91.60066232480632, 105.61061172183275, -14.009456650110751, 34.17035059387107, 229.9993433666025]]
+
+	for ii in servo_positions:
+			robot.MoveJ(ii, blocking=True)
+
+
+def crank_grinder_lever(robot):
+	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([-50, 0, 67.06, 0, 0, 0]).inv()
+	grinder_T_grinder_lever = rdk.TxyzRxyz_2_Pose([-35.82, 83.80, -153.00, 0, np.radians(-90), np.radians(90)])
+	grinder_lever_apprch_T = rdk.TxyzRxyz_2_Pose([0, 0, 10, 0, 0, 0])
+	grinder_lever_pull_T = rdk.TxyzRxyz_2_Pose([0, 0, -40, 0, 0, 0])
+
+	base_T_grinder_lever_apprch = base_T_grinder()*grinder_T_grinder_lever*tcp_T_pointer_end*grinder_lever_apprch_T*rotate_arm_T()
+	base_T_grinder_lever_pull = base_T_grinder()*grinder_T_grinder_lever*tcp_T_pointer_end*grinder_lever_pull_T*rotate_arm_T()
+
+	robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
+	robot.MoveJ(base_T_grinder_lever_pull, blocking=True)
+	robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
