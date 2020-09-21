@@ -39,7 +39,7 @@ def home_to_tool_stand_portafilter(robot):
 	[-127.88997245104923, -84.18972515746033, -76.09053777653044, -109.6696897502238, 90.00001482352836, -1.5697234976294043]]
 
 	for ii in servo_positions:
-	    robot.MoveJ(ii, blocking=True)
+		robot.MoveJ(ii, blocking=True)
 
 	# Approach portafilter tool on the stand
 	T_portafilter_tool_approach = rdk.TxyzRxyz_2_Pose([-399.59, -55.10, 534.02, 0, np.pi, 0])
@@ -54,8 +54,7 @@ def attach_portafilter(robot, RDK, world_frame):
 
 
 def tool_stand_to_grinder_portafilter(robot):
-	servo_positions = [[-156.30685678169834, -81.17665202043209, -75.3849671408721, -113.63929262831658, 89.51132826845027, -182.58734428665286],
-	[-113.68, -81.17, -75.38, -113.63, 89.51, -182.58],
+	servo_positions = [[-113.68, -81.17, -75.38, -113.63, 89.51, -182.58],
 	[-73.42, -81.17, -75.38, -113.63, 89.51, -182.58],
 	[-54.47, -81.17, -75.38, -113.63, 89.51, -182.58],
 	[-69.94515534638512, -94.53528110337791, -122.45672642721897, -134.83502387874725, -114.41460247016077, 143.44328994555121],
@@ -73,12 +72,16 @@ def grinder_lower_portafilter(robot):
 	lower_stand_2_T = rdk.TxyzRxyz_2_Pose([45, 0, -20, 0, np.radians(-15), 0])
 	lower_stand_3_T = rdk.TxyzRxyz_2_Pose([30, 0, 0, 0, np.radians(-10), 0])
 	lower_stand_4_T = rdk.TxyzRxyz_2_Pose([10, 0, 0, 0, np.radians(0), 0])
+
+	#alteration = rdk.TxyzRxyz_2_Pose([-3.1, -0.3, 2.05, 0, 0, 0])
+	alteration = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, 0, 0])
+
 	
 	base_T_lower_stand_1 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_1_T*rotate_arm_T()
 	base_T_lower_stand_2 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_2_T*rotate_arm_T()
 	base_T_lower_stand_3 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_3_T*rotate_arm_T()
 	base_T_lower_stand_4 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_4_T*rotate_arm_T()
-	base_T_grinder_stand = base_T_grinder()*grinder_T_stand*bottom_T_tcp*rotate_arm_T()
+	base_T_grinder_stand = base_T_grinder()*grinder_T_stand*bottom_T_tcp*alteration*rotate_arm_T()
 
 	robot.MoveJ(base_T_lower_stand_1, blocking=True)
 	robot.MoveJ(base_T_lower_stand_2, blocking=True)
@@ -107,7 +110,6 @@ def grinder_stand_to_tool_stand(robot):
 
 
 def attach_grinder_tool(robot, RDK, world_frame):
-	# Detach portafilter at the grinder
 	RDK.RunProgram('Grinder Tool Attach (Stand)', True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
@@ -140,7 +142,7 @@ def press_start_stop_grinder(robot):
 	robot.MoveJ(base_T_on_button_apprch, blocking=True) # Grinder 'on' button release
 
 
-	rdk.pause(3) # A 3 second pause while the coffee grinding occurs
+	rdk.pause(2.5) # A 3 second pause while the coffee grinding occurs
 
 
 	grinder_T_off_button = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, np.radians(90), 0, np.radians(90)])
@@ -158,18 +160,38 @@ def approach_grinder_lever(robot):
 	[81.30007567320077, -91.60066232480632, 105.61061172183275, -14.009456650110751, 34.17035059387107, 229.9993433666025]]
 
 	for ii in servo_positions:
-			robot.MoveJ(ii, blocking=True)
+		robot.MoveJ(ii, blocking=True)
 
 
 def crank_grinder_lever(robot):
 	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([-50, 0, 67.06, 0, 0, 0]).inv() # Wrong way round
 	grinder_T_grinder_lever = rdk.TxyzRxyz_2_Pose([-35.82, 83.80, -153.00, 0, np.radians(-90), np.radians(90)])
 	grinder_lever_apprch_T = rdk.TxyzRxyz_2_Pose([0, 0, 10, 0, 0, 0])
-	grinder_lever_pull_T = rdk.TxyzRxyz_2_Pose([0, 0, -40, 0, 0, 0])
+	grinder_lever_pull_T = rdk.TxyzRxyz_2_Pose([0, 20, -200, 0, 0, 0])
 
+	# Fix naming
 	base_T_grinder_lever_apprch = base_T_grinder()*grinder_T_grinder_lever*tcp_T_pointer_end*grinder_lever_apprch_T*rotate_arm_T()
 	base_T_grinder_lever_pull = base_T_grinder()*grinder_T_grinder_lever*tcp_T_pointer_end*grinder_lever_pull_T*rotate_arm_T()
 
 	robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
 	robot.MoveJ(base_T_grinder_lever_pull, blocking=True)
-	robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
+	#robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
+
+
+def grinder_lever_to_tool_stand(robot):
+		servo_positions = [[99.64, -66.44, 100.5, -34.05, 64.25, 229.99],
+		[99.6398682947346, -74.87436299620246, 86.7098033574326, -11.825573063211925, 64.24948630695674, 229.9900393663943],
+		[70.71, -75.98, 73.43, 29.55, 71.25, 229.99],
+		[-86.79, -87.22, -68.46, -114.29, 90.0, -56.28]]
+
+		for ii in servo_positions:
+			robot.MoveJ(ii, blocking=True)
+
+		T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, 0])
+		robot.MoveJ(T_grinder_tool_approach, blocking=True)
+
+
+def detach_grinder_tool(robot, RDK, world_frame):
+	RDK.RunProgram('Grinder Tool Detach (Stand)', True)
+	robot.setPoseFrame(world_frame)
+	robot.setPoseTool(robot.PoseTool())

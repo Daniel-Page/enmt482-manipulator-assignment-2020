@@ -35,7 +35,7 @@ robot.setPoseTool(robot.PoseTool())
 
 
 '''
-Available commands:
+Commands Sequence:
 
 robot.MoveJ(target, blocking=True)
 
@@ -51,6 +51,12 @@ grinder.press_start_stop_grinder(robot)
 
 grinder.approach_grinder_lever(robot)
 grinder.crank_grinder_lever(robot)
+grinder.grinder_lever_to_tool_stand(robot)
+grinder.detach_grinder_tool(robot, RDK, world_frame)
+grinder.tool_stand_to_grinder_portafilter(robot)
+
+
+
 
 coffee_machine.coffee_switch(robot)
 coffee_machine.hot_water_switch(robot)
@@ -72,8 +78,18 @@ cup.cup_tool_close(robot, RDK, world_frame)
 
 robot.MoveJ(target, blocking=True)
 
-#cup.home_to_tool_stand_cup(robot)
-#cup.attach_cup_tool(robot, RDK, world_frame)
-cup.lower_tool_to_cups(robot)
+grinder.home_to_tool_stand_portafilter(robot)
+grinder.attach_portafilter(robot, RDK, world_frame)
+grinder.tool_stand_to_grinder_portafilter(robot)
+grinder.grinder_lower_portafilter(robot)
+grinder.detach_portafilter(robot, RDK, world_frame)
+grinder.grinder_stand_to_tool_stand(robot)
+grinder.attach_grinder_tool(robot, RDK, world_frame)
+grinder.tool_stand_to_grinder_buttons(robot)
+grinder.press_start_stop_grinder(robot)
 
-
+grinder.approach_grinder_lever(robot)
+grinder.crank_grinder_lever(robot)
+grinder.grinder_lever_to_tool_stand(robot)
+grinder.detach_grinder_tool(robot, RDK, world_frame)
+grinder.tool_stand_to_grinder_portafilter(robot)
