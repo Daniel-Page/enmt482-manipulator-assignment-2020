@@ -69,9 +69,9 @@ def grinder_lower_portafilter(robot):
 	bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32.0, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
 
 	lower_stand_1_T = rdk.TxyzRxyz_2_Pose([100, 0, -80, 0, np.radians(-20), 0])
-	lower_stand_2_T = rdk.TxyzRxyz_2_Pose([45, 0, -20, 0, np.radians(-15), 0])
-	lower_stand_3_T = rdk.TxyzRxyz_2_Pose([30, 0, 0, 0, np.radians(-10), 0])
-	lower_stand_4_T = rdk.TxyzRxyz_2_Pose([10, 0, 0, 0, np.radians(0), 0])
+	lower_stand_2_T = rdk.TxyzRxyz_2_Pose([30, 0, -20, 0, np.radians(-14), 0])
+	lower_stand_3_T = rdk.TxyzRxyz_2_Pose([10, 0, 0, 0, np.radians(-8), 0])
+	lower_stand_4_T = rdk.TxyzRxyz_2_Pose([5, 0, 0, 0, np.radians(0), 0])
 
 	#alteration = rdk.TxyzRxyz_2_Pose([-3.1, -0.3, 2.05, 0, 0, 0])
 	alteration = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, 0, 0])
