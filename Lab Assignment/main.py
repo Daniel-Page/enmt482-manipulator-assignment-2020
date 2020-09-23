@@ -77,7 +77,10 @@ cup.cup_tool_close(robot, RDK, world_frame)
 # Beginning of the routine
 
 
+cup.cup_tool_open(robot, RDK, world_frame)
 
 cup.tool_stand_to_cups(robot)
+
+
 cup.lower_tool_to_cups(robot)
 
