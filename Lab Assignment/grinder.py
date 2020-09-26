@@ -13,16 +13,22 @@ import numpy as np
 
 def base_T_grinder():
 	# Grinder reference frame with respect to the robot base reference frame
-	return rdk.Mat([
-	    [-7.3289583075E-01, -6.8034087138E-01, 0.0000000000E+00,
-	         4.8451000000E+02],
-	        [6.8034087138E-01, -7.3289583075E-01, 0.0000000000E+00,
-	         -4.2660000000E+02],
-	        [0.0000000000E+00, 0.0000000000E+00, 1.0000000000E+00,
-	         3.1838000000E+02],
-	        [0.0000000000E+00, 0.0000000000E+00, 0.0000000000E+00,
-	         1.0000000000E+00]
-	])
+	return rdk.Mat([[-7.053353848478343124384082329925E-01,
+         -7.088737510174554223851828282932E-01,
+         0.000000000000000000000000000000E+00,
+         4.822900000000000204636307898909E+02],
+        [7.088737510174554223851828282932E-01,
+         -7.053353848478343124384082329925E-01,
+         0.000000000000000000000000000000E+00,
+         -4.337400000000000090949470177293E+02],
+        [0.000000000000000000000000000000E+00,
+         0.000000000000000000000000000000E+00,
+         1.000000000000000000000000000000E+00,
+         3.141299999999999954525264911354E+02],
+        [0.000000000000000000000000000000E+00,
+         0.000000000000000000000000000000E+00,
+         0.000000000000000000000000000000E+00,
+         1.000000000000000000000000000000E+00]])
 
 
 def rotate_arm_T():
@@ -74,19 +80,25 @@ def grinder_lower_portafilter(robot):
 	lower_stand_4_T = rdk.TxyzRxyz_2_Pose([5, 0, 0, 0, np.radians(0), 0])
 
 	#alteration = rdk.TxyzRxyz_2_Pose([-3.1, -0.3, 2.05, 0, 0, 0])
-	alteration = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, 0, 0])
+	alteration1 = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, 0, 0])
+
+	alteration2 = rdk.TxyzRxyz_2_Pose([32.0, 0, -27.56, 0, 0, 0])
+	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([0, 0, -102.82, 0, 0, 0]) # Wrong away round
 
 	
 	base_T_lower_stand_1 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_1_T*rotate_arm_T()
 	base_T_lower_stand_2 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_2_T*rotate_arm_T()
 	base_T_lower_stand_3 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_3_T*rotate_arm_T()
 	base_T_lower_stand_4 = base_T_grinder()*grinder_T_stand*bottom_T_tcp*lower_stand_4_T*rotate_arm_T()
-	base_T_grinder_stand = base_T_grinder()*grinder_T_stand*bottom_T_tcp*alteration*rotate_arm_T()
 
-	robot.MoveJ(base_T_lower_stand_1, blocking=True)
-	robot.MoveJ(base_T_lower_stand_2, blocking=True)
-	robot.MoveJ(base_T_lower_stand_3, blocking=True)
-	robot.MoveJ(base_T_lower_stand_4, blocking=True)
+	#robot.MoveJ(base_T_lower_stand_1, blocking=True)
+	#robot.MoveJ(base_T_lower_stand_2, blocking=True)
+	#robot.MoveJ(base_T_lower_stand_3, blocking=True)
+	#robot.MoveJ(base_T_lower_stand_4, blocking=True)
+
+
+	base_T_grinder_stand = base_T_grinder()*grinder_T_stand*bottom_T_tcp*rotate_arm_T()
+
 	robot.MoveJ(base_T_grinder_stand, blocking=True)
 
 
@@ -128,7 +140,7 @@ def tool_stand_to_grinder_buttons(robot):
 		robot.MoveJ(ii, blocking=True)
 
 
-def press_start_stop_grinder(robot):
+def press_start_stop_grinder(robot, delay):
 	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).inv() # Wrong away round
 	button_approach_T = rdk.TxyzRxyz_2_Pose([0, 0, -20, 0, 0, 0])
 
@@ -142,7 +154,7 @@ def press_start_stop_grinder(robot):
 	robot.MoveJ(base_T_on_button_apprch, blocking=True) # Grinder 'on' button release
 
 
-	rdk.pause(2.5) # A 3 second pause while the coffee grinding occurs
+	rdk.pause(delay) # A 3 second pause while the coffee grinding occurs
 
 
 	grinder_T_off_button = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, np.radians(90), 0, np.radians(90)])
@@ -163,18 +175,46 @@ def approach_grinder_lever(robot):
 		robot.MoveJ(ii, blocking=True)
 
 
-def crank_grinder_lever(robot):
-	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([-50, 0, 67.06, 0, 0, 0]).inv() # Wrong way round
+def crank_grinder_lever(robot, angle):
+	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([-50, 0, 67.06, 0, 0, 0]).inv() # Wrong way around
+
+	test = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, 0, 0])
+
 	grinder_T_grinder_lever = rdk.TxyzRxyz_2_Pose([-35.82, 83.80, -153.00, 0, np.radians(-90), np.radians(90)])
 	grinder_lever_apprch_T = rdk.TxyzRxyz_2_Pose([0, 0, 10, 0, 0, 0])
-	grinder_lever_pull_T = rdk.TxyzRxyz_2_Pose([0, 20, -200, 0, 0, 0])
+	grinder_lever_pull_T = rdk.TxyzRxyz_2_Pose([0, 20, -50, 0, 0, 0])
+
+	init_ang = np.arctan2(83.80, -35.82)
+	radius = np.sqrt((-35.82)**2 + 83.80**2)
+	
+	# Crank
+	for cr in range(-10,angle,10):
+		theta = init_ang - np.radians(cr)
+		x = np.cos(theta)*radius
+		y = np.sin(theta)*radius
+		m = x/y # Gradient (y opposite to the conventional direction so it is not -ve)
+		a = np.arctan2(m, 1)
+		t1 = rdk.TxyzRxyz_2_Pose([x, y, -153.00, 0, np.radians(-90), np.radians(90)])
+		t2 = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, a, 0])
+		base_T_grinder_lever_apprch = base_T_grinder()*t1*t2*tcp_T_pointer_end*test*rotate_arm_T()
+		robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
+
+	# Uncrank
+	for cr in range(angle,-15,-10):
+		theta = init_ang - np.radians(cr)
+		x = np.cos(theta)*radius
+		y = np.sin(theta)*radius
+		m = x/y # Gradient
+		a = np.arctan2(m, 1)
+		t1 = rdk.TxyzRxyz_2_Pose([x, y, -153.00, 0, np.radians(-90), np.radians(90)])
+		t2 = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, a, 0])
+		base_T_grinder_lever_apprch = base_T_grinder()*t1*t2*tcp_T_pointer_end*test*rotate_arm_T()
+		robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
 
 	# Fix naming
-	base_T_grinder_lever_apprch = base_T_grinder()*grinder_T_grinder_lever*tcp_T_pointer_end*grinder_lever_apprch_T*rotate_arm_T()
-	base_T_grinder_lever_pull = base_T_grinder()*grinder_T_grinder_lever*tcp_T_pointer_end*grinder_lever_pull_T*rotate_arm_T()
+	#base_T_grinder_lever_pull = base_T_grinder()*grinder_T_grinder_lever*tcp_T_pointer_end*test*grinder_lever_pull_T*rotate_arm_T()
 
-	robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
-	robot.MoveJ(base_T_grinder_lever_pull, blocking=True)
+	#robot.MoveJ(base_T_grinder_lever_pull, blocking=True)
 	#robot.MoveJ(base_T_grinder_lever_apprch, blocking=True)
 
 
