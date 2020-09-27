@@ -10,7 +10,7 @@
 import robodk as rdk # Robot toolbox
 import numpy as np
 
-
+'''
 def base_T_grinder():
 	# Coffee grinder reference frame with respect to the robot base reference frame
 	return rdk.Mat([[-7.053353848478343124384082329925E-01,
@@ -29,6 +29,14 @@ def base_T_grinder():
 		 0.000000000000000000000000000000E+00,
 		 0.000000000000000000000000000000E+00,
 		 1.000000000000000000000000000000E+00]])
+'''
+
+def base_T_grinder():
+	# Coffee grinder reference frame with respect to the robot base reference frame
+	return rdk.Mat([[-7.328958E-01, -6.803409E-01, 0.000000E+00, 4.845100E+02],
+        [6.803409E-01, -7.328958E-01, 0.000000E+00, -4.266000E+02],
+        [0.000000E+00, 0.000000E+00, 1.000000E+00, 3.183800E+02],
+        [0.000000E+00, 0.000000E+00, 0.000000E+00, 1.000000E+00]])
 
 
 def rotate_arm_T():
@@ -243,3 +251,37 @@ def detach_grinder_tool(robot, RDK, world_frame):
 	RDK.RunProgram('Grinder Tool Detach (Stand)', True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
+
+
+def grinder_portafilter_reapprch(robot):
+	# 
+	
+	# Frames
+	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
+	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
+	stand_T_stand_apprch = rdk.TxyzRxyz_2_Pose([0, 0, 80, 0, 0, 0]).inv()
+	base_T_stand_apprch = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*stand_T_stand_apprch*rotate_arm_T()
+
+	robot.MoveJ(base_T_stand_apprch)
+
+
+def reattach_portafilter(robot, RDK, world_frame):
+	# Run program to reattach the portafilter
+	RDK.RunProgram('Portafilter Tool Attach (Grinder)', True)
+	robot.setPoseFrame(world_frame)
+	robot.setPoseTool(robot.PoseTool())
+
+	# Frames
+	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
+	bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, 0, 0]).inv()
+	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
+	stand_T_pos_1  = rdk.TxyzRxyz_2_Pose([10, 0, -80, 0, 0, 0])
+	stand_T_pos_2 = rdk.TxyzRxyz_2_Pose([10, 0, 0, 0, 0, 0])
+
+	base_T_pos_1 = base_T_grinder()*grinder_T_stand*stand_T_pos_1*bottom_T_tcp*rotate_arm_T()
+	base_T_pos_2 = base_T_grinder()*grinder_T_stand*stand_T_pos_2*bottom_T_tcp*rotate_arm_T()
+	base_T_grinder_stand = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*rotate_arm_T()
+	
+	# Move the portafilter horizontally towards the fork
+	robot.MoveJ(base_T_pos_2) 
+	robot.MoveJ(base_T_pos_1) 

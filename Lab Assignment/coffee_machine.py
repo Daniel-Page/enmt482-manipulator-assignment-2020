@@ -44,11 +44,21 @@ def place_cup_in_coffmch(robot):
 	# Frames
 	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
 	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47.0, 0, 186.11, 0, 0, 0]).inv()
-	top_of_cup = rdk.TxyzRxyz_2_Pose([-80, 0, 0, 0, 0, 0]).inv()
+	top_of_cup = rdk.TxyzRxyz_2_Pose([85, 0, 0, 0, 0, 0])
 
 	coffmch_T_base = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup*rotate_arm_T()
-	
+
 	robot.MoveJ(coffmch_T_base)
+
+
+def exit_cup_standoff(robot):
+
+	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
+	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47.0, 0, 186.11, 0, 0, 0]).inv()
+	top_of_cup_exit = rdk.TxyzRxyz_2_Pose([85, 0, -80, 0, 0, 0])
+
+	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_exit*rotate_arm_T()
+	robot.MoveJ(coffmch_T_exit)
 
 
 def coffee_switch(robot):
