@@ -14,6 +14,7 @@
 # Only this file needs to be added to RoboDK (assuming the modules are in the same directory as the .rdk file)
 
 # Note that TxyzRxyz_2_Pose(...) uses Euler angles
+# Note that the transforms for UR52019 seem to be more accurate with respect to the 2020 RoboDK model 
 
 
 import robolink as rl # RoboDK API
@@ -32,6 +33,7 @@ world_frame = RDK.Item('UR5 Base')
 target = RDK.Item('Home') # Existing target in station
 robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
+master_tool = RDK.Item('Master Tool')
 
 
 '''
@@ -79,7 +81,7 @@ coffee_machine.steam_switch(robot)
 coffee_machine.power_switch(robot)
 
 cup.home_to_tool_stand_cup(robot)
-cup.attach_cup_tool(robot, RDK, world_frame)
+cup.attach_cup_tool(robot, RDK, world_frame, master_tool)
 cup.tool_stand_to_cups(robot)
 cup.lower_tool_to_cups(robot)
 
@@ -92,7 +94,12 @@ cup.cup_tool_close(robot, RDK, world_frame)
 # Beginning of the routine
 
 
+robot.MoveJ(target, blocking=True)
 
-grinder.crank_grinder_lever(robot, 100)
-
+cup.home_to_tool_stand_cup(robot)
+cup.attach_cup_tool(robot, RDK, world_frame, master_tool)
+cup.tool_stand_to_cups(robot)
+cup.cup_tool_open(robot, RDK, world_frame)
+cup.skewer_cup(robot)
+cup.cup_tool_close(robot, RDK, world_frame)
 
