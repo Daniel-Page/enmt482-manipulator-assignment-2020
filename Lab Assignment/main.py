@@ -34,6 +34,7 @@ target = RDK.Item('Home') # Existing target in station
 robot.setPoseFrame(world_frame)
 robot.setPoseTool(robot.PoseTool())
 master_tool = RDK.Item('Master Tool')
+portafilter_tool = RDK.Item('Portafilter Tool')
 
 
 '''
@@ -51,11 +52,11 @@ grinder.attach_portafilter(robot, RDK, world_frame)  # 2. Run program to attach 
 
 grinder.tool_stand_to_grinder_portafilter(robot)     # 3. Move the portafilter from the tool stand to the coffee grinder
 
-grinder.grinder_lower_portafilter(robot)             # 4. Carefully lower the portafilter into position on the coffee grinder
+grinder.place_portafilter(robot)                     # 4. Carefully place the portafilter into position on the coffee grinder
 
 grinder.detach_portafilter(robot, RDK, world_frame)  # 5. Run program to detach the portafilter
 
-grinder.grinder_stand_to_tool_stand(robot)           # 6. Move from the coffee grinder to the entry point for the grinder tool on the tool stand
+grinder.stand_to_tool_stand(robot)                   # 6. Move from the coffee grinder to the entry point for the grinder tool on the tool stand
 
 grinder.attach_grinder_tool(robot, RDK, world_frame) # 7. Run program to attach grinder tool
 
@@ -67,46 +68,61 @@ grinder.approach_grinder_lever(robot)                # 10. Move into a position 
 
 grinder.crank_grinder_lever(robot, 120)              # 11. Crank the lever [arg 2] degrees, then returns to its previous position
 
-grinder.grinder_lever_to_tool_stand(robot)           # 12. Move from the coffee grinder lever position to the grinder tool entry point
+grinder.lever_to_tool_stand(robot)                   # 12. Move from the coffee grinder lever position to the grinder tool entry point
 
-grinder.detach_grinder_tool(robot, RDK, world_frame) # 13. Run program to detach the grinder tool 
+grinder.detach_grinder_tool(robot, RDK, world_frame) # 13. Run program to detach the grinder tool
 
-grinder.tool_stand_to_grinder_portafilter(robot)     # 14. Move from the tool stand to a position ready to approach the portafilter
+grinder.tool_stand_to_grinder_portafilter(robot)     # 14. (same as 3) Move from the tool stand to a position ready to approach the portafilter
 
 
 # Coffee machine functions
+
 coffee_machine.coffee_switch(robot)
+
 coffee_machine.hot_water_switch(robot)
+
 coffee_machine.steam_switch(robot)
+
 coffee_machine.power_switch(robot)
 
 
-
 # Cup functions
-cup.home_to_tool_stand_cup(robot)
-cup.attach_cup_tool(robot, RDK, world_frame, master_tool)
-cup.tool_stand_to_cups(robot)
-cup.cup_tool_open(robot, RDK, world_frame)
-cup.skewer_cup(rocup.lift_cup_from_stack(robot)
-bot)
-cup.cup_tool_close(robot, RDK, world_frame)
-cup.lift_cup_from_stack(robot)
+
+cup.home_to_tool_stand_cup(robot)                         # Move from home to the tool stand entry point for the cup tool
+
+cup.attach_cup_tool(robot, RDK, world_frame, master_tool) # Run program to attach the cup tool
+
+cup.tool_stand_to_cups(robot)                             # Move from the tool stand to the vicinity of the stack of cups
+
+cup.cup_tool_open(robot, RDK, world_frame)                # Run program to open the cup tool
+
+cup.skewer_cup(robot)                                     # Grab a cup from the stack (the 20th cup high)
+
+cup.cup_tool_close(robot, RDK, world_frame)               # Run program to close the cup tool
+
+cup.lift_cup_from_stack(robot)                            # Lift the cup above the stack
+
+coffee_machine.place_cup_in_coffmch(robot)                # Rotate the cup and move to the alcove in the coffee machine
 
 '''
 
 
 # Beginning of the routine
 
-cup.home_to_tool_stand_cup(robot)
-cup.attach_cup_tool(robot, RDK, world_frame, master_tool)
-cup.tool_stand_to_cups(robot)
-cup.cup_tool_open(robot, RDK, world_frame)
-cup.skewer_cup(robot)
-cup.cup_tool_close(robot, RDK, world_frame)
-cup.lift_cup_from_stack(robot)
-coffee_machine.place_cup_in_coffmch(robot)
+robot.MoveJ(target)
 
-#robot.MoveJ([-118.19, -70.88, -134.29, 205.16, -118.19, -40.0])
-#robot.MoveJ([-118.18978806925169, -70.87513471939873, -134.28772465130754, 205.16308880190587, -118.1892324839125, 139.99966707714685])
+cup.home_to_tool_stand_cup(robot)                         # Move from home to the tool stand entry point for the cup tool
 
+cup.attach_cup_tool(robot, RDK, world_frame, master_tool) # Run program to attach the cup tool
 
+cup.tool_stand_to_cups(robot)                             # Move from the tool stand to the vicinity of the stack of cups
+
+cup.cup_tool_open(robot, RDK, world_frame)                # Run program to open the cup tool
+
+cup.skewer_cup(robot)                                     # Grab a cup from the stack (the 20th cup high)
+
+cup.cup_tool_close(robot, RDK, world_frame)               # Run program to close the cup tool
+
+cup.lift_cup_from_stack(robot)                            # Lift the cup above the stack
+
+coffee_machine.place_cup_in_coffmch(robot)   
