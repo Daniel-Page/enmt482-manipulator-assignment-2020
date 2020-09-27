@@ -48,6 +48,12 @@ def tool_stand_to_cups(robot):
 	for ii in servo_positions:
 		robot.MoveJ(ii, blocking=True)
 		
+
+def cup_tool_open(robot, RDK, world_frame):
+	RDK.RunProgram('Cup Tool Open', True)
+	robot.setPoseFrame(world_frame)
+	robot.setPoseTool(robot.PoseTool())
+
 	
 def skewer_cup(robot):
 	base_T_cup = rdk.TxyzRxyz_2_Pose([1.92, -595.89, -20.0, 0, 0, 0])
@@ -63,14 +69,19 @@ def skewer_cup(robot):
 	robot.MoveJ(test1, blocking=True)
 
 
-
-def cup_tool_open(robot, RDK, world_frame):
-	RDK.RunProgram('Cup Tool Open', True)
-	robot.setPoseFrame(world_frame)
-	robot.setPoseTool(robot.PoseTool())
-
-
 def cup_tool_close(robot, RDK, world_frame):
 	RDK.RunProgram('Cup Tool Close', True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
+
+
+def lift_cup_from_stack(robot):
+	base_T_cup = rdk.TxyzRxyz_2_Pose([1.92, -595.89, -20.0, 0, 0, 0])
+	cup_bottom_T_top_edge = rdk.TxyzRxyz_2_Pose([0, 0, 147.25, np.pi/2, 0, -np.pi/2])
+	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47.0, 0, 186.11, 0, 0, 0]).inv()
+	
+	cups_apprch_T = rdk.TxyzRxyz_2_Pose([-150, 0, 0, 0, 0, 0])
+
+	test = base_T_cup*cup_bottom_T_top_edge*cup_tool_center_T_tcp*cups_apprch_T*rotate_arm_T()
+	robot.MoveJ(test, blocking=True)
+

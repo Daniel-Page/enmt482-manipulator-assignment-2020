@@ -80,21 +80,22 @@ coffee_machine.hot_water_switch(robot)
 coffee_machine.steam_switch(robot)
 coffee_machine.power_switch(robot)
 
+
+
+# Cup functions
 cup.home_to_tool_stand_cup(robot)
 cup.attach_cup_tool(robot, RDK, world_frame, master_tool)
 cup.tool_stand_to_cups(robot)
-cup.lower_tool_to_cups(robot)
-
 cup.cup_tool_open(robot, RDK, world_frame)
+cup.skewer_cup(rocup.lift_cup_from_stack(robot)
+bot)
 cup.cup_tool_close(robot, RDK, world_frame)
+cup.lift_cup_from_stack(robot)
 
 '''
 
 
 # Beginning of the routine
-
-
-robot.MoveJ(target, blocking=True)
 
 cup.home_to_tool_stand_cup(robot)
 cup.attach_cup_tool(robot, RDK, world_frame, master_tool)
@@ -102,4 +103,10 @@ cup.tool_stand_to_cups(robot)
 cup.cup_tool_open(robot, RDK, world_frame)
 cup.skewer_cup(robot)
 cup.cup_tool_close(robot, RDK, world_frame)
+cup.lift_cup_from_stack(robot)
+coffee_machine.place_cup_in_coffmch(robot)
+
+#robot.MoveJ([-118.19, -70.88, -134.29, 205.16, -118.19, -40.0])
+#robot.MoveJ([-118.18978806925169, -70.87513471939873, -134.28772465130754, 205.16308880190587, -118.1892324839125, 139.99966707714685])
+
 
