@@ -97,7 +97,7 @@ def place_portafilter(robot):
 	base_T_pos_1 = base_T_grinder()*grinder_T_stand*stand_T_pos_1*bottom_T_tcp*rotate_arm_T()
 	base_T_pos_2 = base_T_grinder()*grinder_T_stand*stand_T_pos_2*bottom_T_tcp*rotate_arm_T()
 	base_T_grinder_stand = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*rotate_arm_T()
-	
+
 	# Move the portafilter horizontally towards the fork
 	robot.MoveJ(base_T_pos_1) 
 	robot.MoveJ(base_T_pos_2)
@@ -106,11 +106,20 @@ def place_portafilter(robot):
 	robot.MoveJ(base_T_grinder_stand)
 
 
+
 def detach_portafilter(robot, RDK, world_frame):
 	# Run program to detach the portafilter
 	RDK.RunProgram('Portafilter Tool Detach (Grinder)', True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
+	
+	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
+	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
+	exit = rdk.TxyzRxyz_2_Pose([0, 0, -60, 0, 0, 0])
+
+	base_T_exit = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*exit*rotate_arm_T()
+	robot.MoveJ(base_T_exit)
+
 
 
 def stand_to_tool_stand(robot):
