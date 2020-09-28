@@ -16,6 +16,8 @@
 # Note that TxyzRxyz_2_Pose(...) uses Euler angles
 # Note that the transforms for UR52019 seem to be more accurate with respect to the 2020 RoboDK model 
 # Transform notation {parent}_T_{local_frame}
+# RoboDK has trouble with strings, use double quotes, e.g. RDK.RunProgram("Cup Tool Open", True)
+# Dragging Python files into RoboDK is not recommended, instead make new empty Python script in RoboDK then paste code in
 
 
 import robolink as rl # RoboDK API

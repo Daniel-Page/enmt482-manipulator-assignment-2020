@@ -37,7 +37,7 @@ def home_to_tool_stand_cup(robot):
 
 def attach_cup_tool(robot, RDK, world_frame, master_tool):
 	# Run program to attach the cup tool
-	RDK.RunProgram('Cup Tool Attach (Stand)', True)
+	RDK.RunProgram("Cup Tool Attach (Stand)", True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(master_tool) # This is used as the program does not reset to the tcp
 
@@ -59,7 +59,7 @@ def tool_stand_to_cups(robot):
 
 def cup_tool_open(robot, RDK, world_frame):
 	# Run program to open the cup tool 
-	RDK.RunProgram('Cup Tool Open', True)
+	RDK.RunProgram("Cup Tool Open", True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
 
@@ -83,7 +83,7 @@ def skewer_cup(robot):
 
 def cup_tool_close(robot, RDK, world_frame):
 	# Run program to close the cup tool
-	RDK.RunProgram('Cup Tool Close', True)
+	RDK.RunProgram("Cup Tool Close", True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
 
