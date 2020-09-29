@@ -65,6 +65,8 @@ def exit_cup_standoff(robot):
 
 def coffee_switch(robot, delay):
 	# Turn the coffee switch on and off with a delay between
+
+	# Frames
 	pointer_T_end_tcp = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).inv()
 	coffmch_T_coffee_switch = rdk.TxyzRxyz_2_Pose([50.67, 35.25, -27.89, 0, np.radians(-90), 0])
 	coffee_switch_T_on_apprch = rdk.TxyzRxyz_2_Pose([-7, 0, -15, 0, 0, 0])
