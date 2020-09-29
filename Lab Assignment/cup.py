@@ -31,6 +31,24 @@ def home_to_tool_stand_cup(robot):
 		robot.MoveJ(pos)
 
 	# Approach the cup tool on the stand
+	T_cup_tool_approach = rdk.TxyzRxyz_2_Pose([-358.13, 102.68, 532.67, 0, np.pi, np.radians(-120)])
+	robot.MoveL(T_cup_tool_approach)
+
+
+def portafilter_handover_to_cup_tool(robot):
+	servo_positions = [[-130.34, -79.87, -140.16, 237.8, -127.13, 156.11],
+	[-130.33999816707984, -69.2569365403214, -127.24702314081578, 214.27388149945844, -74.84995355428921, 156.10950534400897],
+	[-130.33, -69.25, -127.24, 214.27, -17.82, 156.1],
+	[-130.33, -67.64, -103.11, 188.54, 55.84, 156.09],
+	[-130.33, -67.64, -103.11, 74.85, 91.49, 156.09],
+	[-130.33, -67.64, -103.11, -17.82, 91.49, 156.09],
+	[-130.33, -67.64, -103.11, -91.49, 91.49, 156.09],
+	[-168.16, -67.64, -103.11, -91.49, 91.49, 156.09]]
+	
+	for pos in servo_positions:
+		robot.MoveJ(pos)
+
+	# Approach the cup tool on the stand
 	T_cup_tool_approach = rdk.TxyzRxyz_2_Pose([-358.13, 102.68, 532.67, 0, np.pi, 0])
 	robot.MoveL(T_cup_tool_approach)
 

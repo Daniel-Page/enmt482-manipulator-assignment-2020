@@ -84,3 +84,16 @@ def coffee_switch(robot, delay):
 	robot.MoveJ(base_T_off_apprch)
 	robot.MoveJ(base_T_off)
 	robot.MoveJ(base_T_off_apprch)
+
+
+
+def tamper_to_coffee_machine(robot, delay):
+	#
+	servo_positions = [[-1.936582734206446, -66.74306264032822, -110.53394906188917, 186.1451355960815, -122.1456802642395, 144.7457822986689],
+	[-73.42, -66.73, -110.53, 186.14, -122.14, 144.74],
+	[-130.34, -79.87, -140.16, 237.81, -138.62, 156.12]]
+	
+	for pos in servo_positions:
+		robot.MoveJ(pos)
+
+	rdk.pause(delay)
