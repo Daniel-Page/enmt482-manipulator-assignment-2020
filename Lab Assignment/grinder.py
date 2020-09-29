@@ -165,15 +165,15 @@ def press_start_stop_grinder(robot, delay):
 	# Press the start button, pause [arg 2] seconds, then press the stop button
 	
 	# Frames
-	tcp_T_pointer_end = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).inv() # Wrong away round
+	pointer_T_end_tcp = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).inv()
 	button_approach_T = rdk.TxyzRxyz_2_Pose([0, 0, -20, 0, 0, 0])
 	grinder_T_on_button = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, np.radians(90), 0, np.radians(90)])
 	
-	base_T_on_button_apprch = base_T_grinder()*grinder_T_on_button*tcp_T_pointer_end*button_approach_T*rotate_arm_T()
-	base_T_on_button = base_T_grinder()*grinder_T_on_button*tcp_T_pointer_end*rotate_arm_T()
+	base_T_on_button_apprch = base_T_grinder()*grinder_T_on_button*pointer_T_end_tcp*button_approach_T*rotate_arm_T()
+	base_T_on_button = base_T_grinder()*grinder_T_on_button*pointer_T_end_tcp*rotate_arm_T()
 	grinder_T_off_button = rdk.TxyzRxyz_2_Pose([-80.71, 94.26, -227.68, np.radians(90), 0, np.radians(90)])
-	base_T_off_button_apprch = base_T_grinder()*grinder_T_off_button*tcp_T_pointer_end*button_approach_T*rotate_arm_T()
-	base_T_off_button = base_T_grinder()*grinder_T_off_button*tcp_T_pointer_end*rotate_arm_T()
+	base_T_off_button_apprch = base_T_grinder()*grinder_T_off_button*pointer_T_end_tcp*button_approach_T*rotate_arm_T()
+	base_T_off_button = base_T_grinder()*grinder_T_off_button*pointer_T_end_tcp*rotate_arm_T()
 
 	robot.MoveJ(base_T_on_button_apprch) # Grinder 'on' button approach
 	robot.MoveJ(base_T_on_button) # Grinder 'on' button press
