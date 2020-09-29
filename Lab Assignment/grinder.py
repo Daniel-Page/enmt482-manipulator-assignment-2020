@@ -65,6 +65,7 @@ def home_to_tool_stand_portafilter(robot):
 
 def attach_portafilter(robot, RDK, world_frame):
 	# Run program to attach portafilter
+	
 	RDK.RunProgram("Portafilter Tool Attach (Stand)", True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
@@ -108,17 +109,18 @@ def place_portafilter(robot):
 
 
 def detach_portafilter(robot, RDK, world_frame):
-	# Run program to detach the portafilter
+	# Run program to detach the portafilter and backoff the stand
+
 	RDK.RunProgram("Portafilter Tool Detach (Grinder)", True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
 	
 	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
 	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
-	exit = rdk.TxyzRxyz_2_Pose([0, 0, -60, 0, 0, 0])
+	angled_bottom_T_stand_backoff = rdk.TxyzRxyz_2_Pose([0, 0, -60, 0, 0, 0])
 
-	base_T_exit = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*exit*rotate_arm_T()
-	robot.MoveJ(base_T_exit)
+	base_T_stand_backoff = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*angled_bottom_T_stand_backoff*rotate_arm_T()
+	robot.MoveJ(base_T_stand_backoff)
 
 
 
@@ -140,6 +142,7 @@ def stand_to_tool_stand(robot):
 
 def attach_grinder_tool(robot, RDK, world_frame):
 	# Run program to attach grinder tool
+
 	RDK.RunProgram("Grinder Tool Attach (Stand)", True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
@@ -257,13 +260,14 @@ def lever_to_tool_stand(robot):
 
 def detach_grinder_tool(robot, RDK, world_frame):
 	# Run program to detach the grinder tool
+
 	RDK.RunProgram("Grinder Tool Detach (Stand)", True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())
 
 
 def grinder_portafilter_reapprch(robot):
-	# 
+	# Approach the coffee grinder stand in preparation to connect to the portafilter
 	
 	# Frames
 	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
@@ -276,6 +280,7 @@ def grinder_portafilter_reapprch(robot):
 
 def reattach_portafilter(robot, RDK, world_frame):
 	# Run program to reattach the portafilter
+
 	RDK.RunProgram("Portafilter Tool Attach (Grinder)", True)
 	robot.setPoseFrame(world_frame)
 	robot.setPoseTool(robot.PoseTool())

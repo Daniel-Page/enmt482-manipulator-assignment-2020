@@ -36,6 +36,9 @@ def home_to_tool_stand_cup(robot):
 
 
 def portafilter_handover_to_cup_tool(robot):
+	# Move the the stand in preparation to connect to the cup tool
+
+	# Intermediate positions
 	servo_positions = [[-130.34, -79.87, -140.16, 237.8, -127.13, 156.11],
 	[-130.33999816707984, -69.2569365403214, -127.24702314081578, 214.27388149945844, -74.84995355428921, 156.10950534400897],
 	[-130.33, -69.25, -127.24, 214.27, -17.82, 156.1],

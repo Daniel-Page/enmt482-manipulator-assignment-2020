@@ -12,7 +12,7 @@ import numpy as np
 
 
 def base_T_coffmch():
-	#
+	# Coffee machine reference frame with respect to the robot base reference frame
 	return rdk.Mat([[-2.5474282622E-01, -9.6700883785E-01, 0.0000000000E+00,
          -3.5990000000E+02],
         [9.6700883785E-01, -2.5474282622E-01, 0.0000000000E+00,
@@ -29,7 +29,9 @@ def rotate_arm_T():
 
 
 def place_cup_in_coffmch(robot):
-	#
+	# Rotate the cup and move to the alcove in the coffee machine
+	
+	# Intermediate positions
 	servo_positions = [[-79.59, -77.5, -129.83, -152.65, 242.39, -40.0],
 	[-79.59, -77.5, -129.83, -152.65, 242.39, 140.0],
 	[-92.59, -77.5, -129.83, -152.65, 221.39, 140.0],
@@ -86,9 +88,10 @@ def coffee_switch(robot, delay):
 	robot.MoveJ(base_T_off_apprch)
 
 
-
 def tamper_to_coffee_machine(robot, delay):
-	#
+	# Move to a position where the portafilter can be manually removed and connect to the coffee machine
+	
+	# Intermediate positions
 	servo_positions = [[-1.936582734206446, -66.74306264032822, -110.53394906188917, 186.1451355960815, -122.1456802642395, 144.7457822986689],
 	[-73.42, -66.73, -110.53, 186.14, -122.14, 144.74],
 	[-130.34, -79.87, -140.16, 237.81, -138.62, 156.12]]

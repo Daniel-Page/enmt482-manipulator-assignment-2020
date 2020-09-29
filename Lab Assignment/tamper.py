@@ -12,7 +12,7 @@ import numpy as np
 
 
 def base_T_tamperbr():
-	#
+	# Tamper stand reference frame with respect to the robot base reference frame
 	return rdk.Mat([[5.0783985461E-01, 8.6145149722E-01, 0.0000000000E+00,
 	 5.9810000000E+02],
 	[-8.6145149722E-01, 5.0783985461E-01, 0.0000000000E+00,
@@ -28,19 +28,19 @@ def rotate_arm_T():
 	return rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, 0, np.radians(50)])
 
 
-
 def grinder_stand_to_tamper(robot):
-	servo_positions = [#[2.14, -76.4, -154.12, 230.53, -67.7, 140.0],
-	[-8.36, -99.57, -132.34, 231.92, -88.2, 140.0],
-	[-8.36, -99.57, -132.34, 231.92, -110.2, 140.0]]
+	# Move to the tamper stand
 
+	# Intermediate positions
+	servo_positions = [[-8.36, -99.57, -132.34, 231.92, -88.2, 140.0],
+	[-8.36, -99.57, -132.34, 231.92, -110.2, 140.0]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
 
 
 def scrape_portafilter(robot):
-	#
+	# Scraping movement to flatten coffee in the portafilter
 
 	# Frames
 	tamper_T_scraper = rdk.TxyzRxyz_2_Pose([70, 0, -32, np.radians(-90), 0 , np.radians(-90)])
@@ -62,6 +62,9 @@ def scrape_portafilter(robot):
 
 
 def crush_portafilter(robot):
+	# Use the tamper disc to crush coffee in the portafilter
+
+	# Frames
 	tamper_T_disc = rdk.TxyzRxyz_2_Pose([-80, 0, -55, np.radians(-90), 0 , np.radians(-90)])
 	portafilter_end_T_tcp = rdk.TxyzRxyz_2_Pose([4.71, 0, 144.76, 0, 0 , 0]).inv()
 	disc_T_tamper_apprch = rdk.TxyzRxyz_2_Pose([-80, 0, 0, 0, np.radians(7.5) , 0])
