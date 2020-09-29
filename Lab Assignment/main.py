@@ -53,7 +53,7 @@ grinder.attach_grinder_tool(robot, RDK, world_frame)      # 7.  Run program to a
 grinder.tool_stand_to_grinder_buttons(robot)              # 8.  Move from the tool stand to the buttons on the side of the coffee grinder
 grinder.press_start_stop_grinder(robot, 1)                # 9.  Press the start button, pause [arg 2] seconds, then press the stop button
 grinder.approach_grinder_lever(robot)                     # 10. Move into a position where the lever of the coffee grinder can be cranked
-grinder.crank_grinder_lever(robot, 50)                   # 11. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 50)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
 grinder.lever_to_tool_stand(robot)                        # 12. Move from the coffee grinder lever position to the grinder tool entry point
 grinder.detach_grinder_tool(robot, RDK, world_frame)      # 13. Run program to detach the grinder tool
 grinder.tool_stand_to_grinder_portafilter(robot)          # 14. (=3.) Move from the tool stand to a position ready to approach the portafilter
@@ -71,7 +71,7 @@ cup.skewer_cup(robot)                                     # 25. Grab a cup from 
 cup.cup_tool_close(robot, RDK, world_frame)               # 26. Run program to close the cup tool
 cup.lift_cup_from_stack(robot)                            # 27. Lift the cup above the stack
 coffee_machine.place_cup_in_coffmch(robot)                # 28. Rotate the cup and move to the alcove in the coffee machine
-coffee_machine.coffee_switch(robot, 2)                       # 29. Turn the coffee switch on and off with a delay between
+coffee_machine.coffee_switch(robot, 2)                    # 29. Turn the coffee switch on and off with a delay between
 '''
 
 # Beginning of the routine
@@ -87,7 +87,7 @@ grinder.attach_grinder_tool(robot, RDK, world_frame)      # 7.  Run program to a
 grinder.tool_stand_to_grinder_buttons(robot)              # 8.  Move from the tool stand to the buttons on the side of the coffee grinder
 grinder.press_start_stop_grinder(robot, 1)                # 9.  Press the start button, pause [arg 2] seconds, then press the stop button
 grinder.approach_grinder_lever(robot)                     # 10. Move into a position where the lever of the coffee grinder can be cranked
-grinder.crank_grinder_lever(robot, 50)                   # 11. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 50)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
 grinder.lever_to_tool_stand(robot)                        # 12. Move from the coffee grinder lever position to the grinder tool entry point
 grinder.detach_grinder_tool(robot, RDK, world_frame)      # 13. Run program to detach the grinder tool
 grinder.tool_stand_to_grinder_portafilter(robot)          # 14. (=3.) Move from the tool stand to a position ready to approach the portafilter
