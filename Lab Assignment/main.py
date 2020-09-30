@@ -80,7 +80,6 @@ coffee_machine.stand_off_to_tool_stand(robot)             # 31. Approach the too
 cup.detach_cup_tool(robot, RDK, world_frame)              # 32. Run program to detach the cup tool
 coffee_machine.approach_grinder_tool_cup(robot)           # 33. Approach the tool stand entry point for the grinder tool from the cup tool
 grinder.attach_grinder_tool(robot, RDK, world_frame)      # 34. Run program to attach the grinder tool
-coffee_machine.approach_coffee_switch(robot)              # 35. Approach the coffee switch
 coffee_machine.coffee_switch(robot, 2)                    # 36. Turn the coffee switch on and off with a delay between
 coffee_machine.coffee_switch_to_stand(robot)              # 37. Move from the coffee switch to the tool stand entry point for the grinder tool
 grinder.detach_grinder_tool(robot, RDK, world_frame)      # 38. Run program to detach the grinder tool
@@ -130,7 +129,6 @@ coffee_machine.stand_off_to_tool_stand(robot)             # 31. Approach the too
 cup.detach_cup_tool(robot, RDK, world_frame)              # 32. Run program to detach the cup tool
 coffee_machine.approach_grinder_tool_cup(robot)           # 33. Approach the tool stand entry point for the grinder tool from the cup tool
 grinder.attach_grinder_tool(robot, RDK, world_frame)      # 34. Run program to attach the grinder tool
-coffee_machine.approach_coffee_switch(robot)              # 35. Approach the coffee switch
 coffee_machine.coffee_switch(robot, 2)                    # 36. Turn the coffee switch on and off with a delay between
 coffee_machine.coffee_switch_to_stand(robot)              # 37. Move from the coffee switch to the tool stand entry point for the grinder tool
 grinder.detach_grinder_tool(robot, RDK, world_frame)      # 38. Run program to detach the grinder tool
