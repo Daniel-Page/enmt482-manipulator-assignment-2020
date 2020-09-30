@@ -12,15 +12,29 @@ import numpy as np
 
 
 def base_T_tamperbr():
+	# Tamper-brush origin in the base reference frame
+	base_P_tamperbr = np.matrix([598.1, 4.31, 212.58]).T
+
+	# Tamper-bush addditional point
+	base_P_adpnt = np.matrix([557.5, 73.18, 157.58]).T
+
+	# The change in coordinates with respect to the base
+	dspmt_vector = base_P_adpnt - base_P_tamperbr
+
+	# Determine the angle from the x axis of the displacement vector
+	dspmt_xy_vector = [float(dspmt_vector[0]), float(dspmt_vector[1])] # The displacement in terms of x and y
+
+	# Determine the change in angle between the previous vector point to the new additional point
+	tamperbr_P_match = np.matrix([-80.00, 0.00, -55.00]).T
+	tamperbr_P_match_xy = [float(tamperbr_P_match[0]), float(tamperbr_P_match[1])]
+
+	base_theta = float(np.arctan2(dspmt_xy_vector[1], dspmt_xy_vector[0]))
+	tamperbr_theta = float(np.arctan2(tamperbr_P_match[1], tamperbr_P_match[0]))
+
+	theta = base_theta - tamperbr_theta
+	
 	# Tamper stand reference frame with respect to the robot base reference frame
-	return rdk.Mat([[5.0783985461E-01, 8.6145149722E-01, 0.0000000000E+00,
-	 5.9810000000E+02],
-	[-8.6145149722E-01, 5.0783985461E-01, 0.0000000000E+00,
-	 4.3100000000E+00],
-	[0.0000000000E+00, 0.0000000000E+00, 1.0000000000E+00,
-	 2.1258000000E+02],
-	[0.0000000000E+00, 0.0000000000E+00, 0.0000000000E+00,
-	 1.0000000000E+00]])
+	return rdk.TxyzRxyz_2_Pose([base_P_tamperbr[0], base_P_tamperbr[1], base_P_tamperbr[2], 0, 0, theta])
 
 
 def rotate_arm_T():
@@ -44,7 +58,7 @@ def scrape_portafilter(robot):
 
 	# Frames
 	tamper_T_scraper = rdk.TxyzRxyz_2_Pose([70, 0, -32, np.radians(-90), 0 , np.radians(-90)])
-	portafilter_end_T_tcp = rdk.TxyzRxyz_2_Pose([4.71, 0, 144.76, 0, 0 , 0]).inv()
+	portafilter_end_T_tcp = rdk.TxyzRxyz_2_Pose([4.71, 0, 144.76, 0, 0 , 0]).invH()
 	scraper_T_apprch = rdk.TxyzRxyz_2_Pose([-40, 0, -50, 0, np.radians(7.5) , 0])
 	scraper_T_exit = rdk.TxyzRxyz_2_Pose([-40, 0, 100, 0, np.radians(7.5) , 0])
 	scraper_T_tamper_lower = rdk.TxyzRxyz_2_Pose([-80, 0, -80, 0, np.radians(7.5) , 0])
@@ -66,7 +80,7 @@ def crush_portafilter(robot):
 
 	# Frames
 	tamper_T_disc = rdk.TxyzRxyz_2_Pose([-80, 0, -55, np.radians(-90), 0 , np.radians(-90)])
-	portafilter_end_T_tcp = rdk.TxyzRxyz_2_Pose([4.71, 0, 144.76, 0, 0 , 0]).inv()
+	portafilter_end_T_tcp = rdk.TxyzRxyz_2_Pose([4.71, 0, 144.76, 0, 0 , 0]).invH()
 	disc_T_tamper_apprch = rdk.TxyzRxyz_2_Pose([-80, 0, 0, 0, np.radians(7.5) , 0])
 	disc_T_crush = rdk.TxyzRxyz_2_Pose([-35, 0, 0, 0, np.radians(7.5) , 0])
 	disc_T_tamper_vicinity = rdk.TxyzRxyz_2_Pose([-80, 0, -100, 0, np.radians(7.5) , 0])

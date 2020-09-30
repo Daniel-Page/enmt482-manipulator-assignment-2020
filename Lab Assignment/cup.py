@@ -91,7 +91,7 @@ def skewer_cup(robot):
 	# Frames
 	base_T_cup = rdk.TxyzRxyz_2_Pose([1.92, -595.89, -20.0, 0, 0, 0])
 	cup_T_middle_point = rdk.TxyzRxyz_2_Pose([0, 0, 147.25, np.pi/2, 0, -np.pi/2])
-	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).inv()
+	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).invH()
 	middle_point_T_cups_apprch = rdk.TxyzRxyz_2_Pose([0, 0, -60, 0, 0, 0])
 	
 	base_T_cups_apprch = base_T_cup*cup_T_middle_point*middle_point_T_cups_apprch*cup_tool_center_T_tcp*rotate_arm_T()
@@ -115,7 +115,7 @@ def lift_cup_from_stack(robot):
 	# Frames
 	base_T_cup = rdk.TxyzRxyz_2_Pose([1.92, -595.89, -20, 0, 0, 0])
 	cup_T_middle_point = rdk.TxyzRxyz_2_Pose([0, 0, 147.25, np.pi/2, 0, -np.pi/2])
-	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).inv()
+	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).invH()
 	middle_point_T_lift = rdk.TxyzRxyz_2_Pose([-150, 0, 0, 0, 0, 0])
 
 	base_T_lift = base_T_cup*cup_T_middle_point*middle_point_T_lift*cup_tool_center_T_tcp*rotate_arm_T()

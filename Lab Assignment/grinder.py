@@ -31,12 +31,23 @@ def base_T_grinder():
 		 1.000000000000000000000000000000E+00]])
 '''
 
+
 def base_T_grinder():
+	# Grinder origin in the base reference frame
+	base_P_grinder = np.matrix([484.51, -426.60, 318.38]).T
+
+	# Grinder additional point in the base reference frame
+	base_P_adpnt = np.matrix([369.74, -320.06, 67.83]).T
+
+	# The change in coordinates with respect to the base
+	dspmt_vector = base_P_adpnt - base_P_grinder
+
+	dspmt_xy_vector = [float(dspmt_vector[0]), float(dspmt_vector[1])] # The displacement in terms of x and y
+
+	theta = np.arctan2(dspmt_xy_vector[1],dspmt_xy_vector[0])
+
 	# Coffee grinder reference frame with respect to the robot base reference frame
-	return rdk.Mat([[-7.328958E-01, -6.803409E-01, 0.000000E+00, 4.845100E+02],
-        [6.803409E-01, -7.328958E-01, 0.000000E+00, -4.266000E+02],
-        [0.000000E+00, 0.000000E+00, 1.000000E+00, 3.183800E+02],
-        [0.000000E+00, 0.000000E+00, 0.000000E+00, 1.000000E+00]])
+	return rdk.TxyzRxyz_2_Pose([base_P_grinder[0], base_P_grinder[1], base_P_grinder[2], 0, 0, theta])
 
 
 def rotate_arm_T():
@@ -84,14 +95,16 @@ def tool_stand_to_grinder_portafilter(robot):
 	for pos in servo_positions:
 		robot.MoveJ(pos)
 
+angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).invH()
+print(angled_bottom_T_tcp)
 
 def place_portafilter(robot):
 	# Carefully place the portafilter into position on the coffee grinder
 
 	# Frames
 	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
-	bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, 0, 0]).inv()
-	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
+	bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, 0, 0]).invH()
+	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).invH()
 	stand_T_pos_1  = rdk.TxyzRxyz_2_Pose([10, 0, -150, 0, 0, 0])
 	stand_T_pos_2 = rdk.TxyzRxyz_2_Pose([10, 0, 0, 0, 0, 0])
 
@@ -116,7 +129,7 @@ def detach_portafilter(robot, RDK, world_frame):
 	robot.setPoseTool(robot.PoseTool())
 	
 	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
-	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
+	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).invH()
 	angled_bottom_T_stand_backoff = rdk.TxyzRxyz_2_Pose([0, 0, -60, 0, 0, 0])
 
 	base_T_stand_backoff = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*angled_bottom_T_stand_backoff*rotate_arm_T()
@@ -168,7 +181,7 @@ def press_start_stop_grinder(robot, delay):
 	# Press the start button, pause [arg 2] seconds, then press the stop button
 	
 	# Frames
-	pointer_T_end_tcp = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).inv()
+	pointer_T_end_tcp = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).invH()
 	button_approach_T = rdk.TxyzRxyz_2_Pose([0, 0, -20, 0, 0, 0])
 	grinder_T_on_button = rdk.TxyzRxyz_2_Pose([-64.42, 89.82, -227.68, np.radians(90), 0, np.radians(90)])
 	
@@ -205,7 +218,7 @@ def crank_grinder_lever(robot, angle):
 	# Crank the lever [arg 2] degrees, then returns to its previous position
 
 	# Tool frame transform
-	pointer_end_T_tcp = rdk.TxyzRxyz_2_Pose([-50, 0, 67.06, 0, 0, 0]).inv()
+	pointer_end_T_tcp = rdk.TxyzRxyz_2_Pose([-50, 0, 67.06, 0, 0, 0]).invH()
 
 	init_ang = np.arctan2(83.80, -35.82) # Initial angle of the lever
 	radius = np.sqrt((-35.82)**2 + 83.80**2) # The radius of the lever
@@ -271,8 +284,8 @@ def grinder_portafilter_reapprch(robot):
 	
 	# Frames
 	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
-	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
-	stand_T_stand_apprch = rdk.TxyzRxyz_2_Pose([0, 0, 80, 0, 0, 0]).inv()
+	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).invH()
+	stand_T_stand_apprch = rdk.TxyzRxyz_2_Pose([0, 0, 80, 0, 0, 0]).invH()
 	base_T_stand_apprch = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*stand_T_stand_apprch*rotate_arm_T()
 
 	robot.MoveJ(base_T_stand_apprch)
@@ -287,8 +300,8 @@ def reattach_portafilter(robot, RDK, world_frame):
 
 	# Frames
 	grinder_T_stand = rdk.TxyzRxyz_2_Pose([157.61, 0, -250.45, 0, np.radians(-90), 0])
-	bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, 0, 0]).inv()
-	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).inv()
+	bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, 0, 0]).invH()
+	angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).invH()
 	stand_T_pos_1  = rdk.TxyzRxyz_2_Pose([10, 0, -80, 0, 0, 0])
 	stand_T_pos_2 = rdk.TxyzRxyz_2_Pose([10, 0, 0, 0, 0, 0])
 
