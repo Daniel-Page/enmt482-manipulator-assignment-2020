@@ -10,27 +10,6 @@
 import robodk as rdk # Robot toolbox
 import numpy as np
 
-'''
-def base_T_grinder():
-	# Coffee grinder reference frame with respect to the robot base reference frame
-	return rdk.Mat([[-7.053353848478343124384082329925E-01,
-		 -7.088737510174554223851828282932E-01,
-		 0.000000000000000000000000000000E+00,
-		 4.822900000000000204636307898909E+02],
-		[7.088737510174554223851828282932E-01,
-		 -7.053353848478343124384082329925E-01,
-		 0.000000000000000000000000000000E+00,
-		 -4.337400000000000090949470177293E+02],
-		[0.000000000000000000000000000000E+00,
-		 0.000000000000000000000000000000E+00,
-		 1.000000000000000000000000000000E+00,
-		 3.141299999999999954525264911354E+02],
-		[0.000000000000000000000000000000E+00,
-		 0.000000000000000000000000000000E+00,
-		 0.000000000000000000000000000000E+00,
-		 1.000000000000000000000000000000E+00]])
-'''
-
 
 def base_T_grinder():
 	# Grinder origin in the base reference frame
@@ -95,8 +74,6 @@ def tool_stand_to_grinder_portafilter(robot):
 	for pos in servo_positions:
 		robot.MoveJ(pos)
 
-angled_bottom_T_tcp = rdk.TxyzRxyz_2_Pose([-32, 0, 27.56, 0, np.radians(-7.5), 0]).invH()
-print(angled_bottom_T_tcp)
 
 def place_portafilter(robot):
 	# Carefully place the portafilter into position on the coffee grinder

@@ -41,6 +41,20 @@ def rotate_arm_T():
 	return rdk.TxyzRxyz_2_Pose([0, 0, 0,0,0, np.radians(50)])
 
 
+def tamper_to_coffee_machine(robot, delay):
+	# Move to a position where the portafilter can be manually removed and connect to the coffee machine
+	
+	# Intermediate positions
+	servo_positions = [[-1.936582734206446, -66.74306264032822, -110.53394906188917, 186.1451355960815, -122.1456802642395, 144.7457822986689],
+	[-73.42, -66.73, -110.53, 186.14, -122.14, 144.74],
+	[-130.34, -79.87, -140.16, 237.81, -138.62, 156.12]]
+	
+	for pos in servo_positions:
+		robot.MoveJ(pos)
+
+	rdk.pause(delay)
+
+
 def place_cup_in_coffmch(robot):
 	# Rotate the cup and move to the alcove in the coffee machine
 	
@@ -69,11 +83,26 @@ def place_cup_in_coffmch(robot):
 def exit_cup_standoff(robot):
 	# 
 	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
-	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47.0, 0, 186.11, 0, 0, 0]).invH()
+	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).invH()
 	top_of_cup_exit = rdk.TxyzRxyz_2_Pose([85, 0, -80, 0, 0, 0])
 
 	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_exit*rotate_arm_T()
 	robot.MoveJ(coffmch_T_exit)
+
+
+def stand_off_to_tool_stand(robot):
+	# Exit out of the stand-off of the coffee machine
+	pass
+
+
+def approach_grinder_tool_cup(robot):
+	# Approach the tool stand entry point for the grinder tool from the cup tool
+	pass
+
+
+def approach_coffee_switch(robot):
+	# Approach the coffee switch
+	pass
 
 
 def coffee_switch(robot, delay):
@@ -103,15 +132,26 @@ def coffee_switch(robot, delay):
 	robot.MoveJ(base_T_off_apprch)
 
 
-def tamper_to_coffee_machine(robot, delay):
-	# Move to a position where the portafilter can be manually removed and connect to the coffee machine
-	
-	# Intermediate positions
-	servo_positions = [[-1.936582734206446, -66.74306264032822, -110.53394906188917, 186.1451355960815, -122.1456802642395, 144.7457822986689],
-	[-73.42, -66.73, -110.53, 186.14, -122.14, 144.74],
-	[-130.34, -79.87, -140.16, 237.81, -138.62, 156.12]]
-	
-	for pos in servo_positions:
-		robot.MoveJ(pos)
+def coffee_switch_to_stand(robot):
+	# Move from the coffee switch to the tool stand entry point for the grinder tool
+	pass
 
-	rdk.pause(delay)
+
+def approach_cup_tool_grinder(robot):
+	# Approach the tool stand entry point for the cup tool from the grinder tool
+	pass
+
+
+def approach_stand_off(robot):
+	# Approach the coffee machine stand-off
+	pass
+
+
+def skewer_filled_cup(robot):
+	# Skewer the filled cup, lift and remove from the stand-off
+	pass
+
+
+def serve_cup(robot):
+	# Move the cup into a position where it can be taken
+	pass

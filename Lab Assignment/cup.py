@@ -121,3 +121,10 @@ def lift_cup_from_stack(robot):
 	base_T_lift = base_T_cup*cup_T_middle_point*middle_point_T_lift*cup_tool_center_T_tcp*rotate_arm_T()
 	
 	robot.MoveJ(base_T_lift)
+
+
+def detach_cup_tool(robot, RDK, world_frame):
+	# Run program to detach the cup tool
+	
+	RDK.RunProgram("Cup Tool Detach (Stand)", True)
+	robot.setPoseFrame(world_frame)
