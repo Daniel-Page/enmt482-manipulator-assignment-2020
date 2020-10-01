@@ -84,12 +84,16 @@ def crush_portafilter(robot):
 	disc_T_tamper_apprch = rdk.TxyzRxyz_2_Pose([-80, 0, 0, 0, np.radians(7.5) , 0])
 	disc_T_crush = rdk.TxyzRxyz_2_Pose([-35, 0, 0, 0, np.radians(7.5) , 0])
 	disc_T_tamper_vicinity = rdk.TxyzRxyz_2_Pose([-80, 0, -100, 0, np.radians(7.5) , 0])
-
+	disc_T_tamper_vicinity_1 = rdk.TxyzRxyz_2_Pose([150, 0, -100, 0, np.radians(7.5) , 0])
+	
 	base_T_disc_apprch = base_T_tamperbr()*tamper_T_disc*portafilter_end_T_tcp*disc_T_tamper_apprch*rotate_arm_T()
 	base_T_disc = base_T_tamperbr()*tamper_T_disc*portafilter_end_T_tcp*disc_T_crush*rotate_arm_T()
 	base_T_disc_vicinity = base_T_tamperbr()*tamper_T_disc*portafilter_end_T_tcp*disc_T_tamper_vicinity*rotate_arm_T()
+	base_T_disc_vicinity_1 = base_T_tamperbr()*tamper_T_disc*portafilter_end_T_tcp*disc_T_tamper_vicinity_1*rotate_arm_T()
 
 	robot.MoveJ(base_T_disc_apprch)
 	robot.MoveJ(base_T_disc)
 	robot.MoveJ(base_T_disc_apprch)
 	robot.MoveJ(base_T_disc_vicinity)
+	robot.MoveJ(base_T_disc_vicinity_1)
+

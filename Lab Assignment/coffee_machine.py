@@ -45,9 +45,10 @@ def tamper_to_coffee_machine(robot, delay):
 	# Move to a position where the portafilter can be manually removed and connect to the coffee machine
 	
 	# Intermediate positions
-	servo_positions = [[-1.936582734206446, -66.74306264032822, -110.53394906188917, 186.1451355960815, -122.1456802642395, 144.7457822986689],
-	[-73.42, -66.73, -110.53, 186.14, -122.14, 144.74],
-	[-130.34, -79.87, -140.16, 237.81, -138.62, 156.12]]
+	servo_positions = [[-16.07, -68.85, -127.0, 204.73-360, -122.14, 144.74],
+	[-61.07, -68.85, -127.0, 204.73-360, -122.14, 144.74],
+	[-109.29, -68.85, -127.0, 204.73-360, -122.14, 144.74]]
+
 	
 	for pos in servo_positions:
 		robot.MoveJ(pos)
