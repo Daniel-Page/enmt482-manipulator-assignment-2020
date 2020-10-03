@@ -65,8 +65,9 @@ def place_cup_in_coffmch(robot):
 	[-92.59, -77.5, -129.83, -152.65, 221.39, 140.0],
 	[-145.72, -84.29, -124.34, -151.31, 185.24, 140.0],
 	[-176.72, -84.29, -124.34, -151.31, 185.24, 140.0],
-	[-176.72, -84.29, -124.34, -151.31, 202.24, 140.0],
-	[-163.00884270390333, -91.09198185429123, -117.87640611155409, -150.99315056155402, 215.95100259871427, 139.97571282346712]]
+	[-181.99354512979588, -94.56088662731848, -114.40134404497128, -160.3369890401527, 179.96589583533623, 130.6413665632621],
+	[-180.30276091664734, -107.13262122134887, -98.74624893351948, -153.93056255453772, 181.65713740901614, 140.13107224802914],
+	[-173.19267247886944, -107.13711269729652, -98.72482164643942, -154.07763542390902, 195.75739904796106, 139.9598552286246]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
@@ -74,9 +75,9 @@ def place_cup_in_coffmch(robot):
 	# Frames
 	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
 	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47.0, 0, 186.11, 0, 0, 0]).invH()
-	top_of_cup = rdk.TxyzRxyz_2_Pose([85, 0, 0, 0, 0, 0])
+	top_of_cup = rdk.TxyzRxyz_2_Pose([85, 0, 0, np.radians(20), 0, 0])
 
-	coffmch_T_base = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup*rotate_arm_T()
+	coffmch_T_base = base_T_coffmch()*coffmch_T_cup_stand*top_of_cup*cup_tool_center_T_tcp*rotate_arm_T()
 
 	robot.MoveJ(coffmch_T_base)
 
@@ -87,25 +88,32 @@ def exit_cup_standoff(robot):
 	# Frames
 	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
 	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).invH()
-	top_of_cup_exit = rdk.TxyzRxyz_2_Pose([85, 0, -80, 0, 0, 0])
-
+	top_of_cup_lower = rdk.TxyzRxyz_2_Pose([70, 0, 0, 0, 0, 0])
+	top_of_cup_exit = rdk.TxyzRxyz_2_Pose([70, 0, -120, 0, 0, 0])
+	
+	coffmch_T_lower = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_lower*rotate_arm_T()
 	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_exit*rotate_arm_T()
+	
+	robot.MoveJ(coffmch_T_lower)
 	robot.MoveJ(coffmch_T_exit)
 
 
 def stand_off_to_tool_stand(robot):
 	# Exit out of the stand-off of the coffee machine
 
-	servo_positions = [[-153.9177495779718, -88.29933209353096, -128.87508470860533, -142.82459812799948, 191.3234474807185, 140.0008888858531],
-	[-153.91008265297455, -80.07028590412146, -117.86831238359088, -162.0412630939772, 89.11013518442671, 140.000148557117],
-	[-153.91, -78.61, -89.43, -101.46, 90.11, 139.99],
-	[-177.63, -66.48, -97.5, -105.49, 90.04, 147.36]]
+	servo_positions = [[-167.87416166874038, -112.25975478474284, -101.93381770960812, -145.7871740485695, 195.3560951845067, 139.99868056083272],
+	[-164.72997979411196, -92.22299243751384, -108.93222155002483, -158.7745260578508, 219.47040975684635, 139.96004613605433],
+	[-191.23535154757727, -69.82530359526434, -103.71808476336204, -186.25754129444843, 192.96509247508752, 140.0998042166975],
+	[-194.6381345228634, -59.61235299149398, -112.65027900764453, -85.2538462288647, 193.27038069741465, 155.09023956404948],
+	[-194.63, -59.61, -112.65, -85.25, 93.86, 155.09],
+	[-177.1147161812992, -68.83786083779691, -94.57049814745048, -101.4506822105205, 91.37818956333713, 172.55537375525967]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
 
 	# Approach the cup tool on the stand
 	T_cup_tool_approach = rdk.TxyzRxyz_2_Pose([-358.13, 102.68, 532.67, 0, np.pi, 0])
+	
 	robot.MoveL(T_cup_tool_approach)
 
 
@@ -171,6 +179,7 @@ def approach_stand_off(robot):
 	top_of_cup_apprch = rdk.TxyzRxyz_2_Pose([85, 0, -80, 0, 0, 0])
 
 	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_apprch*rotate_arm_T()
+	
 	robot.MoveJ(coffmch_T_exit)
 
 
@@ -183,6 +192,7 @@ def skewer_filled_cup(robot):
 	top_of_cup_apprch = rdk.TxyzRxyz_2_Pose([85, 0, 0, 0, 0, 0])
 
 	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_apprch*rotate_arm_T()
+	
 	robot.MoveJ(coffmch_T_exit)
 
 
