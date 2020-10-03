@@ -185,7 +185,10 @@ def approach_grinder_lever(robot):
 	# Intermediate points
 	servo_positions = [[-64.77185023344938, -127.12135786977275, -72.80221506393488, -160.07568512512123, 158.09842468457376, -219.99956055641846],
 	[-63.58, -89.11, -99.35, -141.39, 159.28, -219.99],
-	[81.30007567320077, -91.60066232480632, 105.61061172183275, -14.009456650110751, 34.17035059387107, 229.9993433666025]]
+	[81.30007567320077, -91.60066232480632, 105.61061172183275, -14.009456650110751, 34.17035059387107, 229.9993433666025],
+	[89.08239237204631, -76.64951216815598, 106.22373479172593, -29.573808641361765, 41.952667292475574, 229.99944317380312],
+	[105.91591935934844, -60.361657053274335, 82.76492564776278, -22.402944996306736, 58.78619427943916, 229.9995833519851],
+	[108.78190570440458, -66.3871220769419, 91.9906618823188, -25.603225341364062, 61.65218062445087, 229.99960173656063]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
@@ -209,7 +212,7 @@ def crank_grinder_lever(robot, angle):
 		ang_axis_grad = np.arctan2(m, 1) # The angle between the tangent and positive x axis
 
 		grinder_T_tan_point = rdk.TxyzRxyz_2_Pose([x, y, -153, 0, np.radians(-90), np.radians(90)])
-		grinder_T_tan_angle = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, ang_axis_grad, 0])
+		grinder_T_tan_angle = rdk.TxyzRxyz_2_Pose([0, -20, 0, 0, ang_axis_grad, 0])
 		
 		base_T_grinder_lever_apprch = base_T_grinder()*grinder_T_tan_point*grinder_T_tan_angle*pointer_end_T_tcp*rotate_arm_T()
 		
@@ -224,7 +227,7 @@ def crank_grinder_lever(robot, angle):
 		ang_axis_grad = np.arctan2(m, 1) # The angle between the tangent and positive x axis
 		
 		grinder_T_tan_point = rdk.TxyzRxyz_2_Pose([x, y, -153, 0, np.radians(-90), np.radians(90)])
-		grinder_T_tan_angle = rdk.TxyzRxyz_2_Pose([0, 0, 0, 0, ang_axis_grad, 0])
+		grinder_T_tan_angle = rdk.TxyzRxyz_2_Pose([0, -20, 0, 0, ang_axis_grad, 0])
 		
 		base_T_grinder_lever_apprch = base_T_grinder()*grinder_T_tan_point*grinder_T_tan_angle*pointer_end_T_tcp*rotate_arm_T()
 		

@@ -57,7 +57,7 @@ grinder.attach_grinder_tool(robot, RDK, world_frame)      # 7.  Run program to a
 grinder.tool_stand_to_grinder_buttons(robot)              # 8.  Move from the tool stand to the buttons on the side of the coffee grinder
 grinder.press_start_stop_grinder(robot, 1)                # 9.  Press the start button, pause [arg 2] seconds, then press the stop button
 grinder.approach_grinder_lever(robot)                     # 10. Move into a position where the lever of the coffee grinder can be cranked
-grinder.crank_grinder_lever(robot, 50)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 70)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
 grinder.lever_to_tool_stand(robot)                        # 12. Move from the coffee grinder lever position to the grinder tool entry point
 grinder.detach_grinder_tool(robot, RDK, world_frame)      # 13. Run program to detach the grinder tool
 grinder.tool_stand_to_grinder_portafilter(robot)          # 14. Move from the tool stand to a position ready to approach the portafilter
@@ -65,7 +65,7 @@ grinder.grinder_portafilter_reapprch(robot)               # 15. Approach the cof
 grinder.reattach_portafilter(robot, RDK, world_frame)     # 16. Run program to reattach the portafilter tool
 tamper.scrape_portafilter(robot)                          # 18. Scraping movement to flatten coffee in the portafilter
 tamper.crush_portafilter(robot)                           # 19. Use the tamper disc to crush coffee in the portafilter
-coffee_machine.tamper_to_coffee_machine(robot, 20)        # 20. Move to a position where the portafilter can be manually removed and connect to the coffee machine
+coffee_machine.tamper_to_coffee_machine(robot, 2)         # 20. Move to a position where the portafilter can be manually removed and connect to the coffee machine
 cup.portafilter_handover_to_cup_tool(robot)               # 21. Move the the stand in preparation to connect to the cup tool
 cup.attach_cup_tool(robot, RDK, world_frame, master_tool) # 22. Run program to attach the cup tool
 cup.tool_stand_to_cups(robot)                             # 23. Move from the tool stand to the vicinity of the stack of cups
@@ -105,7 +105,7 @@ grinder.attach_grinder_tool(robot, RDK, world_frame)      # 7.  Run program to a
 grinder.tool_stand_to_grinder_buttons(robot)              # 8.  Move from the tool stand to the buttons on the side of the coffee grinder
 grinder.press_start_stop_grinder(robot, 1)                # 9.  Press the start button, pause [arg 2] seconds, then press the stop button
 grinder.approach_grinder_lever(robot)                     # 10. Move into a position where the lever of the coffee grinder can be cranked
-grinder.crank_grinder_lever(robot, 60)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 70)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
 grinder.lever_to_tool_stand(robot)                        # 12. Move from the coffee grinder lever position to the grinder tool entry point
 grinder.detach_grinder_tool(robot, RDK, world_frame)      # 13. Run program to detach the grinder tool
 grinder.tool_stand_to_grinder_portafilter(robot)          # 14. Move from the tool stand to a position ready to approach the portafilter
@@ -113,7 +113,7 @@ grinder.grinder_portafilter_reapprch(robot)               # 15. Approach the cof
 grinder.reattach_portafilter(robot, RDK, world_frame)     # 16. Run program to reattach the portafilter tool
 tamper.scrape_portafilter(robot)                          # 18. Scraping movement to flatten coffee in the portafilter
 tamper.crush_portafilter(robot)                           # 19. Use the tamper disc to crush coffee in the portafilter
-coffee_machine.tamper_to_coffee_machine(robot, 20)        # 20. Move to a position where the portafilter can be manually removed and connect to the coffee machine
+coffee_machine.tamper_to_coffee_machine(robot, 2)         # 20. Move to a position where the portafilter can be manually removed and connect to the coffee machine
 cup.portafilter_handover_to_cup_tool(robot)               # 21. Move the the stand in preparation to connect to the cup tool
 cup.attach_cup_tool(robot, RDK, world_frame, master_tool) # 22. Run program to attach the cup tool
 cup.tool_stand_to_cups(robot)                             # 23. Move from the tool stand to the vicinity of the stack of cups
