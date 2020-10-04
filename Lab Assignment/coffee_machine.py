@@ -175,14 +175,25 @@ def approach_cup_tool_grinder(robot):
 def approach_stand_off(robot):
 	# Approach the coffee machine stand-off
 	
+	# Intermediate points
+	servo_positions = [[-179.33, -63.4, -87.97, -119.03, 128.6, -114.41],
+	[-179.33, -63.4, -87.97, -197.03, 176.6, -114.41],
+	[-179.33, -63.4, -89.97, -197.03, 226.6, -34.46],
+	[-179.32, -63.39, -89.97, -207.92, 226.6, -219.8],
+	[-164.61287008849547, -67.91525823680817, -126.52619408151806, -166.6186070252998, 241.30379594664623, -219.42925713620764],
+	[-158.46, -94.79, -130.21, -135.99, 243.56, -219.3]]
+	#[  -155.45,  -126.99,   -75.76,    -157.25,   169.8,   140 ]
+	for pos in servo_positions:
+		robot.MoveJ(pos)
+
 	# Frames
 	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
 	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).invH()
-	top_of_cup_apprch = rdk.TxyzRxyz_2_Pose([85, 0, -80, 0, 0, 0])
+	top_of_cup_apprch = rdk.TxyzRxyz_2_Pose([85, 0, -80, np.radians(20), 0, 0])
 
-	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_apprch*rotate_arm_T()
+	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*top_of_cup_apprch*cup_tool_center_T_tcp*rotate_arm_T()
 	
-	robot.MoveJ(coffmch_T_exit)
+	#robot.MoveJ(coffmch_T_exit)
 
 
 def skewer_filled_cup(robot):
@@ -191,11 +202,15 @@ def skewer_filled_cup(robot):
 	# Frames
 	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
 	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).invH()
-	top_of_cup_apprch = rdk.TxyzRxyz_2_Pose([85, 0, 0, 0, 0, 0])
+	top_of_cup_apprch = rdk.TxyzRxyz_2_Pose([85, 0, -80, np.radians(10), 0, 0])
+	top_of_cup = rdk.TxyzRxyz_2_Pose([85, 0, 0, np.radians(10), 0, 0])
 
-	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_apprch*rotate_arm_T()
+	coffmch_T_apprch = base_T_coffmch()*coffmch_T_cup_stand*top_of_cup_apprch*cup_tool_center_T_tcp*rotate_arm_T()
+	coffmch_T = base_T_coffmch()*coffmch_T_cup_stand*top_of_cup*cup_tool_center_T_tcp*rotate_arm_T()
 	
-	robot.MoveJ(coffmch_T_exit)
+	robot.MoveJ(coffmch_T_apprch)
+	robot.MoveJ(coffmch_T)
+
 
 
 def serve_cup(robot):

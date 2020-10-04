@@ -144,4 +144,3 @@ cup.cup_tool_open(robot, RDK, world_frame)                # 43. Run program to o
 coffee_machine.skewer_filled_cup(robot)                   # 44. Skewer the filled cup, lift and remove from the stand-off
 cup.cup_tool_close(robot, RDK, world_frame)               # 45. Run program to close the cup tool
 coffee_machine.serve_cup(robot)                           # 46. Move the cup into a position where it can be taken
-'''
