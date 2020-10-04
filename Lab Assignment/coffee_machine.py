@@ -131,9 +131,9 @@ def coffee_switch(robot, delay):
 	pointer_T_end_tcp = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).invH()
 	coffmch_T_coffee_switch = rdk.TxyzRxyz_2_Pose([50.67, 35.25, -27.89, 0, np.radians(-90), 0])
 	coffee_switch_T_on_apprch = rdk.TxyzRxyz_2_Pose([-7, 0, -15, 0, 0, 0])
-	coffee_switch_T_on = rdk.TxyzRxyz_2_Pose([-7, 0, 0, 0, 0, 0])
+	coffee_switch_T_on = rdk.TxyzRxyz_2_Pose([-7, 0, -2, 0, 0, 0])
 	coffee_switch_T_off_apprch = rdk.TxyzRxyz_2_Pose([7, 0, -15, 0, 0, 0])
-	coffee_switch_T_off = rdk.TxyzRxyz_2_Pose([7, 0, 0, 0, 0, 0])
+	coffee_switch_T_off = rdk.TxyzRxyz_2_Pose([7, 0, -2, 0, 0, 0])
 	
 	base_T_on_apprch = base_T_coffmch()*coffmch_T_coffee_switch*pointer_T_end_tcp*coffee_switch_T_on_apprch*rotate_arm_T()
 	base_T_on = base_T_coffmch()*coffmch_T_coffee_switch*pointer_T_end_tcp*coffee_switch_T_on*rotate_arm_T()
@@ -154,7 +154,9 @@ def coffee_switch(robot, delay):
 def coffee_switch_to_stand(robot):
 	# Move from the coffee switch to the tool stand entry point for the grinder tool
 
-	servo_positions = [[-137.1066625481091, -88.82672268632199, -68.53213864681226, -112.64113866686576, -270.0, -47.106662548109114]]
+	servo_positions = [[-158.64797450496505, -100.97596345809919, -92.64644344681786, -166.3759085755322, 186.59322255491935, -219.99840363028815],
+	[-158.18, -92.52, -102.2, -165.26, 91.49, -219.99],
+	[-149.4742563684273, -77.38278147993852, -90.90689728227224, -108.10968801036518, 92.48517960654515, -211.3358198302056]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)

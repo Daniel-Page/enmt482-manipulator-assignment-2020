@@ -64,10 +64,10 @@ def scrape_portafilter(robot):
 	scraper_T_tamper_lower = rdk.TxyzRxyz_2_Pose([-80, 0, -80, 0, np.radians(7.5) , 0])
 	scraper_T_tamper_common = rdk.TxyzRxyz_2_Pose([-80, -110, -50, 0, np.radians(7.5) , 0])
 
-	base_T_tamper_apprch = base_T_tamperbr()*tamper_T_scraper*portafilter_end_T_tcp*scraper_T_apprch*rotate_arm_T()
-	base_T_tamper_exit = base_T_tamperbr()*tamper_T_scraper*portafilter_end_T_tcp*scraper_T_exit*rotate_arm_T()
-	base_T_tamper_lower = base_T_tamperbr()*tamper_T_scraper*portafilter_end_T_tcp*scraper_T_tamper_lower*rotate_arm_T()
-	base_T_tamper_common = base_T_tamperbr()*tamper_T_scraper*portafilter_end_T_tcp*scraper_T_tamper_common*rotate_arm_T()
+	base_T_tamper_apprch = base_T_tamperbr()*tamper_T_scraper*scraper_T_apprch*portafilter_end_T_tcp*rotate_arm_T()
+	base_T_tamper_exit = base_T_tamperbr()*tamper_T_scraper*scraper_T_exit*portafilter_end_T_tcp*rotate_arm_T()
+	base_T_tamper_lower = base_T_tamperbr()*tamper_T_scraper*scraper_T_tamper_lower*portafilter_end_T_tcp*rotate_arm_T()
+	base_T_tamper_common = base_T_tamperbr()*tamper_T_scraper*scraper_T_tamper_common*portafilter_end_T_tcp*rotate_arm_T()
 
 	robot.MoveJ(base_T_tamper_apprch) 
 	robot.MoveJ(base_T_tamper_exit)
@@ -86,14 +86,13 @@ def crush_portafilter(robot):
 	disc_T_tamper_vicinity = rdk.TxyzRxyz_2_Pose([-80, 0, -100, 0, np.radians(7.5) , 0])
 	disc_T_tamper_vicinity_1 = rdk.TxyzRxyz_2_Pose([150, 0, -100, 0, np.radians(7.5) , 0])
 	
-	base_T_disc_apprch = base_T_tamperbr()*tamper_T_disc*portafilter_end_T_tcp*disc_T_tamper_apprch*rotate_arm_T()
-	base_T_disc = base_T_tamperbr()*tamper_T_disc*portafilter_end_T_tcp*disc_T_crush*rotate_arm_T()
-	base_T_disc_vicinity = base_T_tamperbr()*tamper_T_disc*portafilter_end_T_tcp*disc_T_tamper_vicinity*rotate_arm_T()
-	base_T_disc_vicinity_1 = base_T_tamperbr()*tamper_T_disc*portafilter_end_T_tcp*disc_T_tamper_vicinity_1*rotate_arm_T()
+	base_T_disc_apprch = base_T_tamperbr()*tamper_T_disc*disc_T_tamper_apprch*portafilter_end_T_tcp*rotate_arm_T()
+	base_T_disc = base_T_tamperbr()*tamper_T_disc*disc_T_crush*portafilter_end_T_tcp*rotate_arm_T()
+	base_T_disc_vicinity = base_T_tamperbr()*tamper_T_disc*disc_T_tamper_vicinity*portafilter_end_T_tcp*rotate_arm_T()
+	base_T_disc_vicinity_1 = base_T_tamperbr()*tamper_T_disc*disc_T_tamper_vicinity_1*portafilter_end_T_tcp*rotate_arm_T()
 
 	robot.MoveJ(base_T_disc_apprch)
 	robot.MoveJ(base_T_disc)
 	robot.MoveJ(base_T_disc_apprch)
 	robot.MoveJ(base_T_disc_vicinity)
 	robot.MoveJ(base_T_disc_vicinity_1)
-
