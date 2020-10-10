@@ -97,7 +97,6 @@ def place_portafilter(robot):
 	robot.MoveJ(base_T_grinder_stand)
 
 
-
 def detach_portafilter(robot, RDK, world_frame):
 	# Run program to detach the portafilter and backoff the stand
 
@@ -110,8 +109,10 @@ def detach_portafilter(robot, RDK, world_frame):
 	angled_bottom_T_stand_backoff = rdk.TxyzRxyz_2_Pose([0, 0, -60, 0, 0, 0])
 
 	base_T_stand_backoff = base_T_grinder()*grinder_T_stand*angled_bottom_T_tcp*angled_bottom_T_stand_backoff*rotate_arm_T()
-	robot.MoveJ(base_T_stand_backoff)
 
+	#rdk.pause(2)
+        
+	robot.MoveJ(base_T_stand_backoff)
 
 
 def stand_to_tool_stand(robot):
@@ -204,7 +205,7 @@ def crank_grinder_lever(robot, angle):
 	radius = np.sqrt((-35.82)**2 + 83.80**2) # The radius of the lever
 	
 	# Crank the lever
-	for rot in range(-10, angle, 10):
+	for rot in range(-8, angle, 10):
 		theta = init_ang - np.radians(rot)
 		x = np.cos(theta)*radius # The x coordinate of the point on the circle
 		y = np.sin(theta)*radius # The y coordinate of the point on the circle
@@ -212,14 +213,14 @@ def crank_grinder_lever(robot, angle):
 		ang_axis_grad = np.arctan2(m, 1) # The angle between the tangent and positive x axis
 
 		grinder_T_tan_point = rdk.TxyzRxyz_2_Pose([x, y, -153, 0, np.radians(-90), np.radians(90)])
-		grinder_T_tan_angle = rdk.TxyzRxyz_2_Pose([0, -20, 0, 0, ang_axis_grad, 0])
+		grinder_T_tan_angle = rdk.TxyzRxyz_2_Pose([0, -25, 0, np.radians(-6), ang_axis_grad, 0])
 		
 		base_T_grinder_lever_apprch = base_T_grinder()*grinder_T_tan_point*grinder_T_tan_angle*pointer_end_T_tcp*rotate_arm_T()
 		
 		robot.MoveJ(base_T_grinder_lever_apprch)
 
 	# Uncrank the lever
-	for rot in range(angle, -15, -10):
+	for rot in range(angle, -13, -10):
 		theta = init_ang - np.radians(rot)
 		x = np.cos(theta)*radius
 		y = np.sin(theta)*radius
@@ -227,7 +228,7 @@ def crank_grinder_lever(robot, angle):
 		ang_axis_grad = np.arctan2(m, 1) # The angle between the tangent and positive x axis
 		
 		grinder_T_tan_point = rdk.TxyzRxyz_2_Pose([x, y, -153, 0, np.radians(-90), np.radians(90)])
-		grinder_T_tan_angle = rdk.TxyzRxyz_2_Pose([0, -20, 0, 0, ang_axis_grad, 0])
+		grinder_T_tan_angle = rdk.TxyzRxyz_2_Pose([0, -25, 0, np.radians(-6), ang_axis_grad, 0])
 		
 		base_T_grinder_lever_apprch = base_T_grinder()*grinder_T_tan_point*grinder_T_tan_angle*pointer_end_T_tcp*rotate_arm_T()
 		

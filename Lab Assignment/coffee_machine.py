@@ -88,13 +88,10 @@ def exit_cup_standoff(robot):
 	# Frames
 	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
 	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).invH()
-	top_of_cup_lower = rdk.TxyzRxyz_2_Pose([70, 0, 0, 0, 0, 0])
-	top_of_cup_exit = rdk.TxyzRxyz_2_Pose([70, 0, -120, 0, 0, 0])
-	
-	coffmch_T_lower = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_lower*rotate_arm_T()
+	top_of_cup_exit = rdk.TxyzRxyz_2_Pose([85, 0, -80, 0, 0, 0])
+
 	coffmch_T_exit = base_T_coffmch()*coffmch_T_cup_stand*cup_tool_center_T_tcp*top_of_cup_exit*rotate_arm_T()
 	
-	robot.MoveJ(coffmch_T_lower)
 	robot.MoveJ(coffmch_T_exit)
 
 
@@ -202,8 +199,8 @@ def skewer_filled_cup(robot):
 	# Frames
 	coffmch_T_cup_stand = rdk.TxyzRxyz_2_Pose([-12.68, 72.0, -290.0, 0, -np.pi/2 , 0])
 	cup_tool_center_T_tcp = rdk.TxyzRxyz_2_Pose([-47, 0, 186.11, 0, 0, 0]).invH()
-	top_of_cup_apprch = rdk.TxyzRxyz_2_Pose([85, 0, -80, np.radians(10), 0, 0])
-	top_of_cup = rdk.TxyzRxyz_2_Pose([85, 0, 0, np.radians(10), 0, 0])
+	top_of_cup_apprch = rdk.TxyzRxyz_2_Pose([89, 0, -80, np.radians(10), 0, 0])
+	top_of_cup = rdk.TxyzRxyz_2_Pose([89, 0, 0, np.radians(10), 0, 0])
 
 	coffmch_T_apprch = base_T_coffmch()*coffmch_T_cup_stand*top_of_cup_apprch*cup_tool_center_T_tcp*rotate_arm_T()
 	coffmch_T = base_T_coffmch()*coffmch_T_cup_stand*top_of_cup*cup_tool_center_T_tcp*rotate_arm_T()
