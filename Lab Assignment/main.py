@@ -57,9 +57,9 @@ grinder.attach_grinder_tool(robot, RDK, world_frame)      # 7.  Run program to a
 grinder.tool_stand_to_grinder_buttons(robot)              # 8.  Move from the tool stand to the buttons on the side of the coffee grinder
 grinder.press_start_stop_grinder(robot, 3)                # 9.  Press the start button, pause [arg 2] seconds, then press the stop button
 grinder.approach_grinder_lever(robot)                     # 10. Move into a position where the lever of the coffee grinder can be cranked
-grinder.crank_grinder_lever(robot, 58)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
-#grinder.crank_grinder_lever(robot, 58)                   # 12. Crank the lever [arg 2] degrees, then returns to its previous position
-#grinder.crank_grinder_lever(robot, 58)                   # 13. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 60)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 60)                    # 12. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 60)                    # 13. Crank the lever [arg 2] degrees, then returns to its previous position
 grinder.lever_to_tool_stand(robot)                        # 14. Move from the coffee grinder lever position to the grinder tool entry point
 grinder.detach_grinder_tool(robot, RDK, world_frame)      # 15. Run program to detach the grinder tool
 grinder.tool_stand_to_grinder_portafilter(robot)          # 16. Move from the tool stand to a position ready to approach the portafilter
@@ -95,6 +95,7 @@ cup.cup_tool_close(robot, RDK, world_frame)               # 45. Run program to c
 coffee_machine.serve_cup(robot)                           # 46. Move the cup into a position where it can be taken
 '''
 
+
 # Beginning of the routine
 
 robot.MoveJ(target, blocking=True)
@@ -108,9 +109,9 @@ grinder.attach_grinder_tool(robot, RDK, world_frame)      # 7.  Run program to a
 grinder.tool_stand_to_grinder_buttons(robot)              # 8.  Move from the tool stand to the buttons on the side of the coffee grinder
 grinder.press_start_stop_grinder(robot, 3)                # 9.  Press the start button, pause [arg 2] seconds, then press the stop button
 grinder.approach_grinder_lever(robot)                     # 10. Move into a position where the lever of the coffee grinder can be cranked
-grinder.crank_grinder_lever(robot, 58)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
-#grinder.crank_grinder_lever(robot, 58)                   # 12. Crank the lever [arg 2] degrees, then returns to its previous position
-#grinder.crank_grinder_lever(robot, 58)                   # 13. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 60)                    # 11. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 60)                    # 12. Crank the lever [arg 2] degrees, then returns to its previous position
+grinder.crank_grinder_lever(robot, 60)                    # 13. Crank the lever [arg 2] degrees, then returns to its previous position
 grinder.lever_to_tool_stand(robot)                        # 14. Move from the coffee grinder lever position to the grinder tool entry point
 grinder.detach_grinder_tool(robot, RDK, world_frame)      # 15. Run program to detach the grinder tool
 grinder.tool_stand_to_grinder_portafilter(robot)          # 16. Move from the tool stand to a position ready to approach the portafilter
@@ -144,3 +145,4 @@ cup.cup_tool_open(robot, RDK, world_frame)                # 43. Run program to o
 coffee_machine.skewer_filled_cup(robot)                   # 44. Skewer the filled cup, lift and remove from the stand-off
 cup.cup_tool_close(robot, RDK, world_frame)               # 45. Run program to close the cup tool
 coffee_machine.serve_cup(robot)                           # 46. Move the cup into a position where it can be taken
+

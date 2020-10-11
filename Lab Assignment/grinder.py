@@ -42,14 +42,15 @@ def home_to_tool_stand_portafilter(robot):
 	[-37.89, -90.0, -89.99, -89.99, 90.0, 0.0],
 	[-61.58, -90.0, -89.99, -89.99, 90.0, 0.0],
 	[-80.53, -90.0, -89.99, -89.99, 90.0, 0.0],
-	[-101.04641114821452, -83.7466574162878, -78.03965611514451, -108.18364791378339, 90.00059210641064, -1.5765964271364985],
-	[-127.88997245104923, -84.18972515746033, -76.09053777653044, -109.6696897502238, 90.00001482352836, -1.5697234976294043]]
+	[-101.04641114821452, -83.7466574162878, -78.03965611514451, -108.18364791378339, 90.00059210641064, -150],
+	[-156.312482199397, -81.17544163890734, -75.38761432826722, -113.63098704331327, 89.52803499431462, -178.61756842212782]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
 
 	# Approach the portafilter tool on the tool stand
-	base_T_portafilter_tool_approach = rdk.TxyzRxyz_2_Pose([-399.59, -55.1, 534.02, 0, np.pi, 0])
+	base_T_portafilter_tool_approach = rdk.TxyzRxyz_2_Pose([-399.59, -55.1, 534.02, 0, np.pi, np.radians(243.72)])
+	
 	robot.MoveJ(base_T_portafilter_tool_approach)
 
 
@@ -127,7 +128,7 @@ def stand_to_tool_stand(robot):
 		robot.MoveJ(pos)
 
 	# Approach the grinder tool on the stand
-	base_T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, 0])
+	base_T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, np.radians(250)])
 	robot.MoveJ(base_T_grinder_tool_approach)
 
 
@@ -184,12 +185,10 @@ def approach_grinder_lever(robot):
 	# Move into a position where the lever of the coffee grinder can be cranked
 
 	# Intermediate points
-	servo_positions = [[-64.77185023344938, -127.12135786977275, -72.80221506393488, -160.07568512512123, 158.09842468457376, -219.99956055641846],
-	[-63.58, -89.11, -99.35, -141.39, 159.28, -219.99],
-	[81.30007567320077, -91.60066232480632, 105.61061172183275, -14.009456650110751, 34.17035059387107, 229.9993433666025],
-	[89.08239237204631, -76.64951216815598, 106.22373479172593, -29.573808641361765, 41.952667292475574, 229.99944317380312],
-	[105.91591935934844, -60.361657053274335, 82.76492564776278, -22.402944996306736, 58.78619427943916, 229.9995833519851],
-	[108.78190570440458, -66.3871220769419, 91.9906618823188, -25.603225341364062, 61.65218062445087, 229.99960173656063]]
+	servo_positions = [[-64.13429115633453, -142.01280497319934, -59.89648654293294, -158.08994537428222, 158.73598376163366, -219.99953779226848],
+	[-64.13, -142.01, -59.89, -158.08, 224.55, -169.9],
+	[-55.34, -114.17, -98.6, -147.19, 283.24, -127.13],
+	[-49.22, -117.77, -92.98, -149.19, 250.69, -127.12]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
@@ -205,7 +204,7 @@ def crank_grinder_lever(robot, angle):
 	radius = np.sqrt((-35.82)**2 + 83.80**2) # The radius of the lever
 	
 	# Crank the lever
-	for rot in range(-8, angle, 10):
+	for rot in range(-5, angle, 5):
 		theta = init_ang - np.radians(rot)
 		x = np.cos(theta)*radius # The x coordinate of the point on the circle
 		y = np.sin(theta)*radius # The y coordinate of the point on the circle
@@ -220,7 +219,7 @@ def crank_grinder_lever(robot, angle):
 		robot.MoveJ(base_T_grinder_lever_apprch)
 
 	# Uncrank the lever
-	for rot in range(angle, -13, -10):
+	for rot in range(angle, -6, -5):
 		theta = init_ang - np.radians(rot)
 		x = np.cos(theta)*radius
 		y = np.sin(theta)*radius
@@ -239,16 +238,18 @@ def lever_to_tool_stand(robot):
 	# Move from the coffee grinder lever position to the grinder tool entry point
 	
 	# Intermediate points
-	servo_positions = [[99.64, -66.44, 100.5, -34.05, 64.25, 229.99],
-	[99.6398682947346, -74.87436299620246, 86.7098033574326, -11.825573063211925, 64.24948630695674, 229.9900393663943],
-	[70.71, -75.98, 73.43, 29.55, 71.25, 229.99],
-	[-86.79, -87.22, -68.46, -114.29, 90.0, -56.28]]
+	servo_positions = [[-53.60313457377775, -122.7158357046079, -79.3810327041722, -164.6959774122915, 231.18897441922843, -131.43172565058643],
+	[-54.97088040316478, -123.36781914589272, -78.31826824658378, -165.24139089047358, 229.83101892633047, -131.6434156830944],
+	[-59.44842313653053, -126.86231808423882, -72.51566146665223, -168.0608241444991, 225.3885384999729, -132.40128438673278],
+	[-67.05004770114235, -101.03139844451483, -75.69434863320133, -85.83433134460131, 86.73013176448607, -133.99975219794703],
+	[-115.4739856902763, -65.26570611373033, -106.90998315254127, -90.2385299123432, 87.03418690524228, -131.21795832724288],
+	[-141.35928072011595, -93.29556155123218, -63.93029647605776, -112.9170751521884, 89.94185567448959, -167.09002236608796]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
 
 	# Approach the grinder tool on the tool stand
-	base_T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, 0])
+	base_T_grinder_tool_approach = rdk.TxyzRxyz_2_Pose([-441.77, -214.48, 534.24, 0, np.pi, np.radians(250)])
 	robot.MoveJ(base_T_grinder_tool_approach)
 
 
