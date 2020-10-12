@@ -59,8 +59,8 @@ def scrape_portafilter(robot):
 	# Frames
 	tamper_T_scraper = rdk.TxyzRxyz_2_Pose([70, 0, -32, np.radians(-90), 0 , np.radians(-90)])
 	portafilter_end_T_tcp = rdk.TxyzRxyz_2_Pose([4.71, 0, 144.76, 0, 0 , 0]).invH()
-	scraper_T_apprch = rdk.TxyzRxyz_2_Pose([-18, 0, -50, 0, np.radians(7.5) , 0])
-	scraper_T_exit = rdk.TxyzRxyz_2_Pose([-18, 0, 60, 0, np.radians(7.5) , 0])
+	scraper_T_apprch = rdk.TxyzRxyz_2_Pose([-12, 0, -50, 0, np.radians(7.5) , 0])
+	scraper_T_exit = rdk.TxyzRxyz_2_Pose([-12, 0, 60, 0, np.radians(7.5) , 0])
 	scraper_T_tamper_lower = rdk.TxyzRxyz_2_Pose([-80, 0, -80, 0, np.radians(7.5) , 0])
 	scraper_T_tamper_common = rdk.TxyzRxyz_2_Pose([-80, -110, -50, 0, np.radians(7.5) , 0])
 
@@ -92,7 +92,7 @@ def crush_portafilter(robot):
 	base_T_disc_vicinity_1 = base_T_tamperbr()*tamper_T_disc*disc_T_tamper_vicinity_1*portafilter_end_T_tcp*rotate_arm_T()
 
 	manual_apprch = rdk.TxyzRxyz_2_Pose([415.267, 61.939, 130.270-50,  np.radians(-5.816), np.radians(84.979), np.radians(-124.796)])
-	manual_crush = rdk.TxyzRxyz_2_Pose([415.267, 61.939, 130.270-15,  np.radians(-5.816), np.radians(84.979), np.radians(-124.796)])
+	manual_crush = rdk.TxyzRxyz_2_Pose([415.267, 61.939, 130.270-5,  np.radians(-5.816), np.radians(84.979), np.radians(-124.796)])
 
 	robot.MoveJ(manual_apprch)
 	robot.MoveJ(manual_crush)

@@ -62,7 +62,8 @@ def place_cup_in_coffmch(robot):
 	# Intermediate positions
 	servo_positions = [[-82.89, -77.5, -129.83, -152.65, 293.39, -39.99],
 	[-82.89, -77.5, -129.83, -152.65, 293.39, 140.0],
-	[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821]]
+	[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821],
+	[-67.634467, -66.735319, -144.388532, -148.008560, 357.715263, 139.198704]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
@@ -81,7 +82,8 @@ def place_cup_in_coffmch(robot):
 def exit_cup_standoff(robot):
 	# Exit out of the stand-off of the coffee machine
 
-	servo_positions = [[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821]]
+	servo_positions = [[-67.634467, -66.735319, -144.388532, -148.008560, 357.715263, 139.198704],
+	[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
@@ -129,10 +131,10 @@ def coffee_switch(robot, delay):
 	# Frames
 	pointer_T_end_tcp = rdk.TxyzRxyz_2_Pose([0, 0, 102.82, 0, 0, 0]).invH()
 	coffmch_T_coffee_switch = rdk.TxyzRxyz_2_Pose([50.67, 35.25, -27.89, 0, np.radians(-90), 0])
-	coffee_switch_T_on_apprch = rdk.TxyzRxyz_2_Pose([-7, 0, -15, 0, 0, 0])
-	coffee_switch_T_on = rdk.TxyzRxyz_2_Pose([-7, 0, -2, 0, 0, 0])
-	coffee_switch_T_off_apprch = rdk.TxyzRxyz_2_Pose([7, 0, -15, 0, 0, 0])
-	coffee_switch_T_off = rdk.TxyzRxyz_2_Pose([7, 0, -2, 0, 0, 0])
+	coffee_switch_T_on_apprch = rdk.TxyzRxyz_2_Pose([7, 0, -15, 0, 0, 0])
+	coffee_switch_T_on = rdk.TxyzRxyz_2_Pose([7, 0, -2, 0, 0, 0])
+	coffee_switch_T_off_apprch = rdk.TxyzRxyz_2_Pose([21, 0, -15, 0, 0, 0])
+	coffee_switch_T_off = rdk.TxyzRxyz_2_Pose([21, 0, -2, 0, 0, 0])
 	
 	base_T_on_apprch = base_T_coffmch()*coffmch_T_coffee_switch*pointer_T_end_tcp*coffee_switch_T_on_apprch*rotate_arm_T()
 	base_T_on = base_T_coffmch()*coffmch_T_coffee_switch*pointer_T_end_tcp*coffee_switch_T_on*rotate_arm_T()
@@ -140,13 +142,15 @@ def coffee_switch(robot, delay):
 	base_T_off = base_T_coffmch()*coffmch_T_coffee_switch*pointer_T_end_tcp*coffee_switch_T_off*rotate_arm_T()
 
 	robot.MoveJ(base_T_off_apprch)
-	robot.MoveJ(base_T_off)
+	#robot.MoveJ(base_T_off)
+	robot.MoveJ(rdk.TxyzRxyz_2_Pose([-445.439, -254.343, 330.489,  np.radians(88.066), np.radians(16.235), np.radians(143.650)]))
 	robot.MoveJ(base_T_off_apprch)
 
 	rdk.pause(delay)
 
 	robot.MoveJ(base_T_on_apprch)
-	robot.MoveJ(base_T_on)
+	#robot.MoveJ(base_T_on)
+	robot.MoveJ(rdk.TxyzRxyz_2_Pose([-443.779, -253.648, 318.807,  np.radians(88.925), np.radians(16.151), np.radians(147.507)]))
 	robot.MoveJ(base_T_on_apprch)
 
 
@@ -200,7 +204,8 @@ def skewer_filled_cup(robot):
 	# Skewer the filled cup, lift and remove from the stand-off
 
 	# Intermediate positions
-	servo_positions = [[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821]]
+	servo_positions = [[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821],
+	[-67.634467, -66.735319, -144.388532, -148.008560, 357.715263, 139.198704]]
 
 	for pos in servo_positions:
 		robot.MoveJ(pos)
@@ -216,11 +221,11 @@ def skewer_filled_cup(robot):
 	robot.MoveJ(coffmch_T_base)
 
 
-
 def serve_cup(robot):
 	# Move the cup into a position where it can be taken
 	
-	servo_positions = [[-59.54399725279543, -58.0611228121563, -132.65521635312516, -169.2800646851474, 355.6978510185116, 139.99668359351074],
+	servo_positions = [[-67.634467, -66.735319, -144.388532, -148.008560, 357.715263, 139.198704],
+	[-59.54399725279543, -58.0611228121563, -132.65521635312516, -169.2800646851474, 355.6978510185116, 139.99668359351074],
 	[-59.54399725279543, -59.9347314478943, -102.27954629484765, -197.78212610768693, 355.6978510185116, 139.99668359351074],
 	[-2.37, -59.93, -102.27, -197.78, 355.69, 139.99],
 	[-3.5245101100421348, -80.96092040863095, -84.56663573942096, -194.4426402132363, 273.28554858957295, 139.9880557989964]]
