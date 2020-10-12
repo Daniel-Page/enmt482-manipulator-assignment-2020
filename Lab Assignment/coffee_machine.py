@@ -81,10 +81,10 @@ def place_cup_in_coffmch(robot):
 def exit_cup_standoff(robot):
 	# Exit out of the stand-off of the coffee machine
 
-	#servo_positions = [[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821]]
+	servo_positions = [[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821]]
 
-	#for pos in servo_positions:
-		#robot.MoveJ(pos)
+	for pos in servo_positions:
+		robot.MoveJ(pos)
 
 	# Frames
 	x_offset = 8
@@ -139,15 +139,15 @@ def coffee_switch(robot, delay):
 	base_T_off_apprch = base_T_coffmch()*coffmch_T_coffee_switch*pointer_T_end_tcp*coffee_switch_T_off_apprch*rotate_arm_T()
 	base_T_off = base_T_coffmch()*coffmch_T_coffee_switch*pointer_T_end_tcp*coffee_switch_T_off*rotate_arm_T()
 
-	robot.MoveJ(base_T_on_apprch)
-	robot.MoveJ(base_T_on)
-	robot.MoveJ(base_T_on_apprch)
-
-	rdk.pause(delay)
-	
 	robot.MoveJ(base_T_off_apprch)
 	robot.MoveJ(base_T_off)
 	robot.MoveJ(base_T_off_apprch)
+
+	rdk.pause(delay)
+
+	robot.MoveJ(base_T_on_apprch)
+	robot.MoveJ(base_T_on)
+	robot.MoveJ(base_T_on_apprch)
 
 
 def coffee_switch_to_stand(robot):
@@ -198,6 +198,12 @@ def approach_stand_off(robot):
 
 def skewer_filled_cup(robot):
 	# Skewer the filled cup, lift and remove from the stand-off
+
+	# Intermediate positions
+	servo_positions = [[-67.63446698231493, -62.20658978885603, -138.84207898275827, -158.08374327970063, 357.71526342867105, 139.1987039433821]]
+
+	for pos in servo_positions:
+		robot.MoveJ(pos)
 	
 	# Frames
 	x_offset = 8
