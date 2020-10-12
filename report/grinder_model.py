@@ -40,7 +40,7 @@ colorscale_y = [[0, 'green'],[1, 'green']]
 colorscale_z = [[0, 'blue'],[1, 'blue']]
 
 
-def rotrgb(theta,axis):
+def rotrgb(x,y,z,theta,axis):
 	xr = []
 	yr = []
 	zr = []
@@ -68,7 +68,7 @@ def rotrgb(theta,axis):
 		yr1 = []
 		zr1 = []
 		for q in range(len(x2[0])):
-			res = np.matmul(R,np.array([[x2[i][q]],[y2[i][q]],[z2[i][q]]]))
+			res = np.matmul(R,np.array([[x[i][q]],[y[i][q]],[z[i][q]]]))
 			#print(res)
 			xr1.append(float(res[0]))
 			yr1.append(float(res[1]))
@@ -85,31 +85,62 @@ def rotrgb(theta,axis):
 
 
 
-def axesrgb(x=0,y=0,z=0):
+def axesrgb(x=0,y=0,z=0,turn=0):
 
 	cyl_z = go.Surface(x=x+x2, y=y+y2, z=z+z2,
 					 colorscale = colorscale_z,
 					 showscale=False,
 					 opacity=1)
 
-	xr,yr,zr = rotrgb(-90,1)
+	xr,yr,zr = rotrgb(x2,y2,z2,-90,1)
+	xr,yr,zr = rotrgb(xr,yr,zr,turn,3)
 	cyl_y = go.Surface(x=x+xr, y=y+yr, z=z+zr,
 				 colorscale = colorscale_y,
 				 showscale=False,
 				 opacity=1)
 
-	xr1,yr1,zr1 = rotrgb(90,2)
+	xr1,yr1,zr1 = rotrgb(x2,y2,z2,90,2)
+	xr1,yr1,zr1 = rotrgb(xr1,yr1,zr1,turn,3)
 	cyl_x = go.Surface(x=x+xr1, y=y+yr1, z=z+zr1,
 				 colorscale = colorscale_x,
 				 showscale=False,
 				 opacity=1)
 
 	#layout = go.Layout(scene_xaxis_visible=True, scene_yaxis_visible=True, scene_zaxis_visible=True)
+	
 
-	cone_x = go.Cone(x=[x+100], y=[y+0], z=[z+0], u=[70], v=[0], w=[0],opacity=1,colorscale = colorscale_x,showscale=False)
-	cone_y = go.Cone(x=[x+0], y=[y+100], z=[z+0], u=[0], v=[70], w=[0],opacity=1,colorscale = colorscale_y,showscale=False)
-	cone_z = go.Cone(x=[x+0], y=[y+0], z=[z+100], u=[0], v=[0], w=[70],opacity=1,colorscale = colorscale_z,showscale=False)
-	return cyl_x, cyl_y, cyl_z, cone_x, cone_y, cone_z
+	theta = -90
+	theta = np.radians(theta)
+	c, s = np.cos(theta), np.sin(theta)
+	R = np.array(((1, 0, 0), (0, c, -s), (0, s, c)))
+	res = np.matmul(R,np.array([[0],[0],[100]]))
+	theta = turn
+	theta = np.radians(theta)
+	c, s = np.cos(theta), np.sin(theta)
+	R1 = np.array(((c, -s, 0), (s, c, 0), (0, 0, 1)))
+	res1 = np.matmul(R1,res)
+
+	cone_y = go.Cone(x=[x+float(res1[0])], y=[y+float(res1[1])], z=[z+float(res1[2])], u=[float(res1[0])*0.7], v=[float(res1[1])*0.7], w=[float(res1[2])*0.7],opacity=1, colorscale = colorscale_y, showscale=False)
+	
+
+
+	theta = 90
+	theta = np.radians(theta)
+	c, s = np.cos(theta), np.sin(theta)
+	R = np.array(((c, 0, s), (0, 1, 0), (-s, 0, c)))
+	res = np.matmul(R,np.array([[0],[0],[100]]))
+	theta = turn
+	theta = np.radians(theta)
+	c, s = np.cos(theta), np.sin(theta)
+	R1 = np.array(((c, -s, 0), (s, c, 0), (0, 0, 1)))
+	res1 = np.matmul(R1,res)
+
+
+	cone_x = go.Cone(x=[x+float(res1[0])], y=[y+float(res1[1])], z=[z+float(res1[2])], u=[float(res1[0])*0.7], v=[float(res1[1])*0.7], w=[float(res1[2])*0.7],opacity=1, colorscale = colorscale_x, showscale=False)
+
+	cone_z = go.Cone(x=[x], y=[y], z=[z+100], u=[0], v=[0], w=[70],opacity=1, colorscale = colorscale_z, showscale=False)
+
+	return cyl_x, cyl_y, cyl_z, cone_x, cone_z, cone_y
 
 
 def stl2mesh3d(stl_mesh):
@@ -182,10 +213,10 @@ layout = go.Layout(
 
 graphs = [one,two,three]
 
-ax1 = axesrgb(0,0,20)
+ax1 = axesrgb(0,0,20,0)
 for i in range(len(ax1)):
 	graphs.append(ax1[i])
-ax2 = axesrgb(484.51+43.31-43.31,-426.6-97.46+97.46,336.12)
+ax2 = axesrgb(484.51+43.31-43.31,-426.6-97.46+97.46,336.12,30)
 
 
 for i in range(len(ax2)):
