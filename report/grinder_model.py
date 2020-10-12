@@ -39,21 +39,70 @@ colorscale_x = [[0, 'red'],[1, 'red']]
 colorscale_y = [[0, 'green'],[1, 'green']]
 colorscale_z = [[0, 'blue'],[1, 'blue']]
 
-def axesrgb(x=0,y=0,z=0):
-	cyl_x = go.Surface(x=x+z2, y=y+y2, z=z+x2,
-					 colorscale = colorscale_x,
-					 showscale=False,
-					 opacity=1)
 
-	cyl_y = go.Surface(x=x+x2, y=y+z2, z=z+y2,
-					 colorscale = colorscale_y,
-					 showscale=False,
-					 opacity=1)
+def rotrgb(theta,axis):
+	xr = []
+	yr = []
+	zr = []
+
+	theta = np.radians(theta)
+	c, s = np.cos(theta), np.sin(theta)
+	if axis == 1:
+		R = np.array(((1, 0, 0), (0, c, -s), (0, s, c)))
+	elif axis == 2:
+		R = np.array(((c, 0, s), (0, 1, 0), (-s, 0, c)))
+	elif axis == 3:
+		R = np.array(((c, -s, 0), (s, c, 0), (0, 0, 1)))
+
+
+	#print(R_x)
+
+	#print(len(x2[0]))
+	
+	#print(x2)
+	#print(y2)
+	#print(z2)
+
+	for i in range(len(x2)):
+		xr1 = []
+		yr1 = []
+		zr1 = []
+		for q in range(len(x2[0])):
+			res = np.matmul(R,np.array([[x2[i][q]],[y2[i][q]],[z2[i][q]]]))
+			#print(res)
+			xr1.append(float(res[0]))
+			yr1.append(float(res[1]))
+			zr1.append(float(res[2]))
+		
+		xr.append(xr1)
+		yr.append(yr1)
+		zr.append(zr1)
+
+	xr = np.array(xr)
+	yr = np.array(yr)
+	zr = np.array(zr)
+	return xr,yr,zr
+
+
+
+def axesrgb(x=0,y=0,z=0):
 
 	cyl_z = go.Surface(x=x+x2, y=y+y2, z=z+z2,
 					 colorscale = colorscale_z,
 					 showscale=False,
 					 opacity=1)
+
+	xr,yr,zr = rotrgb(-90,1)
+	cyl_y = go.Surface(x=x+xr, y=y+yr, z=z+zr,
+				 colorscale = colorscale_y,
+				 showscale=False,
+				 opacity=1)
+
+	xr1,yr1,zr1 = rotrgb(90,2)
+	cyl_x = go.Surface(x=x+xr1, y=y+yr1, z=z+zr1,
+				 colorscale = colorscale_x,
+				 showscale=False,
+				 opacity=1)
 
 	#layout = go.Layout(scene_xaxis_visible=True, scene_yaxis_visible=True, scene_zaxis_visible=True)
 
@@ -119,7 +168,7 @@ def meshfile(filename,ox=0,oy=0,oz=0,theta=0):
 	return mesh3D
 
 
-one = meshfile('grinder.stl',484.51,-426.6,0,120)
+one = meshfile('grinder.stl',484.51+43.31,-426.6-97.46,0,120)
 two = meshfile('plate.stl',0,0,20)
 three = meshfile('grinder_stand.stl',370,-220,15,120)
 
@@ -136,8 +185,9 @@ graphs = [one,two,three]
 ax1 = axesrgb(0,0,20)
 for i in range(len(ax1)):
 	graphs.append(ax1[i])
+ax2 = axesrgb(484.51+43.31-43.31,-426.6-97.46+97.46,336.12)
 
-ax2 = axesrgb(450,-316,334)
+
 for i in range(len(ax2)):
 	graphs.append(ax2[i])
 
