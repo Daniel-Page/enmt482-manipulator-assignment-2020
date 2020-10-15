@@ -86,9 +86,9 @@ def crush_portafilter(robot):
 	robot.MoveJ(manual_apprch)
 	robot.MoveJ(manual_crush)
 	robot.MoveJ(manual_apprch)
-	#robot.MoveJ(base_T_disc_apprch)
-	#robot.MoveJ(base_T_disc)
-	#robot.MoveJ(base_T_disc_apprch)
+	# robot.MoveJ(base_T_disc_apprch)
+	# robot.MoveJ(base_T_disc)
+	# robot.MoveJ(base_T_disc_apprch)
 	robot.MoveJ(base_T_disc_vicinity)
 	robot.MoveJ(base_T_disc_vicinity_1)
 	
